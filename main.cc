@@ -1,10 +1,11 @@
-// file hoofd.cc
+// file main.cc
 #include <iostream>
-#include "gobord.h"
+
+#include "goboard.h"
 using namespace std;
 
 int main ( ) {
-  gobord Gobord;
-  Gobord.drukaf ( );
+  goboard Gobord;
+  Gobord.print ( );
   return 0;
 }//main

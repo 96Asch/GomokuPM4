@@ -1,18 +1,19 @@
 // file gobord.cc
+#include "goboard.h"
+
 #include <iostream>
-#include "gobord.h"
 using namespace std;
 
-gobord::gobord ( ) {
+goboard::goboard ( ) {
   // TODO
 }//gobord::gobord
 
-gobord::~gobord ( ) {
+goboard::~goboard ( ) {
   // TODO
 }//gobord::~gobord
 
-void gobord::drukaf ( ) {
-  cout << "Goborden zien er mooi uit." << endl;
+void goboard::print ( ) {
+  cout << "This is the begin of a very good Go game" << endl;
   // TODO
 }//gobord::drukaf
 

@@ -1,12 +1,11 @@
 # GomokuPM4
 
-/*
-	AUTHORS:				      Andrew Huang & Micha de Jong
-	STUDENTID:				    S1913999 & S1821784
-	DATE OF COMPLETION:		--/--/2016
-	ASSIGNMENT:				    4 "Gomoku"
-  DESCRIPTION:          A fun and simple game of Gomoku
-*/
+
+	AUTHORS:		Andrew Huang & Micha de Jong
+	STUDENTID:		S1913999 & S1821784
+	DATE OF COMPLETION:	--/--/2016
+	ASSIGNMENT:		4 "Gomoku"
+	DESCRIPTION:     	A fun and simple game of Gomoku
 
 
 

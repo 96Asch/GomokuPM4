@@ -1,22 +1,22 @@
 // file gobord.h
-class boardSquare {
+class BoardSquare {
   public:
-    char color;           //     7 0 1
-    boardSquare* neighbours[8];  //     6   2
-    boardSquare ( );        //     5 4 3
+    char color;          		 //     7 0 1
+    BoardSquare* neighbours[8];  //     6   2
+    BoardSquare ( );        	 //     5 4 3
 };// a square on the board
 
-class goboard {
+class Goboard {
   private:
-    boardSquare* ingang;
+    BoardSquare* entrance;
     int height, width;
-    void rits (boardSquare* up, boardSquare* down);
-    boardSquare* createRow (int amount);
+    void rits (BoardSquare* up, BoardSquare* down);
+    BoardSquare* createRow (int amount);
     // TODO
   public:
-    goboard ( );
-    goboard (int height, int width);
-    ~goboard ( );
+    Goboard ( );
+    Goboard (int height, int width);
+    ~Goboard ( );
     void createBoard ( );
     void randomMove (char color, int & i, int & j);
     void moveHuman (char color, int & i, int & j);

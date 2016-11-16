@@ -4,17 +4,26 @@
 #include <iostream>
 using namespace std;
 
-goboard::goboard ( ) {
+Goboard::Goboard ( ) {
   // TODO
 }//gobord::gobord
 
-goboard::~goboard ( ) {
+Goboard::~Goboard ( ) {
   // TODO
 }//gobord::~gobord
 
-void goboard::print ( ) {
+void Goboard::print ( ) {
   cout << "This is the begin of a very good Go game" << endl;
   // TODO
-}//gobord::drukaf
+}//gobord::print
+
+void Goboard::createBoard(){
+
+}
+
+void rits(BoardSquare* up, BoardSquare* down){
+
+}
+
 
 // TODO

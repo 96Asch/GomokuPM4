@@ -5,7 +5,7 @@
 using namespace std;
 
 int main ( ) {
-  goboard Gobord;
-  Gobord.print ( );
+  Goboard Gobord;
+  Gobord.print();
   return 0;
 }//main

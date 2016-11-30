@@ -1,31 +1,20 @@
 // file gobord.h
 #include <iostream>
 
-struct BoardSquare {								//		   U
+struct BoardSquare {
     int color;          							 //      7 0 1
 	BoardSquare* neighbours[8];						 //prev  6   2  next
 						      						 //      5 4 3
-}; // a square on the board                                    D
+}; // a square on the board
 
 class Goboard {
   private:
-	BoardSquare* entrance, *exit, *up, *down;
+	BoardSquare* entrance = NULL;
+	BoardSquare* exit = NULL;
     int height, width;
     void rits (BoardSquare* up, BoardSquare* down);
 
-    void connectVert(BoardSquare* downPtr, BoardSquare* upPtr){
-    	BoardSquare* temp = downPtr ;
-    	int x = 0;
-    	while(temp!=NULL){
-    		//temp->neighbours[0] = NULL;
-    		std::cout << temp->color << " k";
-    		temp = temp->neighbours[2];
-    		x++;
-    	}
-    	std::cout << " " << x;
-    }
-
-    BoardSquare* addSquare(int color){
+    void addSquare(int color){
     	BoardSquare* temp = new BoardSquare;
     	temp->color = color;
     	temp->neighbours[2] = entrance;
@@ -37,29 +26,11 @@ class Goboard {
     		exit = temp;
     	}
     	entrance = temp;
-    	return temp;
     };
 
-    BoardSquare* createRow(int squares){
-    	BoardSquare* leftSquare;
+    void createRow(int squares){
     	for(int i = 0; i < squares; i++){
-    		leftSquare = addSquare(i);
-    	}
-    	entrance = NULL;
-    	exit = NULL;
-    	return leftSquare;
-    };
-
-    void createCols(int height, int width){
-    	BoardSquare* leftSquarePrev, *leftSquareNext;
-    	for(int i = 0; i < height; i++){
-    		leftSquarePrev = leftSquareNext;
-    		leftSquareNext = createRow(width);
-    		connectVert(leftSquarePrev, leftSquareNext);
-    		std::cout << std::endl;
-    	//	if(i>1){
-
-    	//	}
+    		addSquare(i);
     	}
     };
 

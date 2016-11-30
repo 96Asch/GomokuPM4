@@ -15,13 +15,13 @@ Goboard::~Goboard ( ) {
 void Goboard::print ( ) {
 	BoardSquare* temp = entrance;
 	while(temp!=NULL){
-		cout << temp->color << endl;
+	//	cout << temp->color << endl;
 		temp = temp->neighbours[2];
 	}
 }//gobord::print
 
 void Goboard::createBoard(){
- createRow(5);
+ createCols(2,2);
 }
 
 void rits(BoardSquare* up, BoardSquare* down){

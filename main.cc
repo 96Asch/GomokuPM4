@@ -45,5 +45,6 @@ int main ( ) {
   Goboard Gobord;
   Gobord.createBoard();
   Gobord.print();
+  cin.get();
   return 0;
 }//main

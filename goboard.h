@@ -2,40 +2,37 @@
 #include <iostream>
 
 struct BoardSquare {
-    char color;          							 //     7 0 1
-	BoardSquare* neighbours[8];						 //     6   2
-						      						 //     5 4 3
+    int color;          							 //      7 0 1
+	BoardSquare* neighbours[8];						 //prev  6   2  next
+						      						 //      5 4 3
 }; // a square on the board
 
 class Goboard {
   private:
-	BoardSquare* entrance;
+	BoardSquare* entrance = NULL;
+	BoardSquare* exit = NULL;
     int height, width;
     void rits (BoardSquare* up, BoardSquare* down);
 
-    void addSquare(char col){
-		BoardSquare* square;
-		square = new BoardSquare;
-    	square->color = col;
-    	square->neighbours[6] = entrance;
-    	square->neighbours[2] = square;
-
-    	entrance = square;
-    };
-
-    void createRow (int amount){
-    	for(int i = 1; i <= amount; i++){
-    	if(i%2==0){
-    		addSquare('T');
+    void addSquare(int color){
+    	BoardSquare* temp = new BoardSquare;
+    	temp->color = color;
+    	temp->neighbours[2] = entrance;
+    	temp->neighbours[6] = NULL;
+    	if(entrance!=NULL){
+    		entrance->neighbours[6] = temp;
     	}
     	else{
-    		addSquare('F');
+    		exit = temp;
     	}
-    	std::cout << "it: " << i << " Square was made" << std::endl;
-    	}
-
+    	entrance = temp;
     };
-    // TODO
+
+    void createRow(int squares){
+    	for(int i = 0; i < squares; i++){
+    		addSquare(i);
+    	}
+    };
 
   public:
     Goboard ( );

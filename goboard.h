@@ -1,18 +1,42 @@
 // file gobord.h
-class BoardSquare {
-  public:
-    char color;          		 //     7 0 1
-    BoardSquare* neighbours[8];  //     6   2
-    BoardSquare ( );        	 //     5 4 3
-};// a square on the board
+#include <iostream>
+
+struct BoardSquare {
+    char color;          							 //     7 0 1
+	BoardSquare* neighbours[8];						 //     6   2
+						      						 //     5 4 3
+}; // a square on the board
 
 class Goboard {
   private:
-    BoardSquare* entrance;
+	BoardSquare* entrance;
     int height, width;
     void rits (BoardSquare* up, BoardSquare* down);
-    BoardSquare* createRow (int amount);
+
+    void addSquare(char col){
+		BoardSquare* square;
+		square = new BoardSquare;
+    	square->color = col;
+    	square->neighbours[6] = entrance;
+    	square->neighbours[2] = square;
+
+    	entrance = square;
+    };
+
+    void createRow (int amount){
+    	for(int i = 1; i <= amount; i++){
+    	if(i%2==0){
+    		addSquare('T');
+    	}
+    	else{
+    		addSquare('F');
+    	}
+    	std::cout << "it: " << i << " Square was made" << std::endl;
+    	}
+
+    };
     // TODO
+
   public:
     Goboard ( );
     Goboard (int height, int width);

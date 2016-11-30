@@ -13,12 +13,21 @@ Goboard::~Goboard ( ) {
 }//gobord::~gobord
 
 void Goboard::print ( ) {
-  cout << "This is the begin of a very good Go game" << endl;
-  // TODO
+	int i = 0;
+	while(entrance){
+		entrance = entrance->neighbours[6];
+		i++;
+		cout << "Square" << i << " Color = " << entrance->color << endl;
+		if(entrance->neighbours[6] == NULL){
+			cout << "End of Board" << endl;
+		}
+
+	}
+
 }//gobord::print
 
 void Goboard::createBoard(){
-
+ createRow(1);
 }
 
 void rits(BoardSquare* up, BoardSquare* down){

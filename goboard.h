@@ -96,7 +96,6 @@ class Goboard {
 		for (int i = 0; i < y; i++) {
 			square = square->neighbours[2];
 		}
-
 		return square;
 		
 	};

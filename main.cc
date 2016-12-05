@@ -1,6 +1,5 @@
 // file main.cc
 #include <iostream>
-
 #include "goboard.h"
 #include "stack.h"
 
@@ -57,7 +56,7 @@ void readSize(int & height, int & width) {
 	}
 }
 
-void menu() {
+void printMenu() {
 	int height, width;
 	readSize(height,width);
 	Goboard Gobord(height, width);
@@ -66,7 +65,7 @@ void menu() {
 }
 
 int main ( ) {
-	menu();
+	printMenu();
   cin.get();
   return 0;
 }//main

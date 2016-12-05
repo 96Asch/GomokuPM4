@@ -5,8 +5,8 @@
 using namespace std;
 
 Goboard::Goboard ( ) {
-	height = 5;
-	width = 5;
+	height = minHeight;
+	width = minWidth;
 	entrance = NULL;
 	exit = NULL;
 }//gobord::gobord
@@ -26,32 +26,31 @@ void Goboard::print ( ) {
 	BoardSquare* ySquare = leftUpper, *xSquare = leftUpper;
 	int counter = 0;
 	for (int i = 0; i < (width * 2 + 1); i++) {
-		cout << "-";	cout.flush();
+		cout << "-";
 	}
-	cout << endl;	cout.flush();
+	cout << endl;
 	while (ySquare != NULL) {
 		xSquare = ySquare;
 		while (xSquare != NULL) {
 			counter++;
 			if (counter == 1) {
-				cout << "|";	cout.flush();
+				cout << "|";
 			}
-			cout  <<xSquare->color <<  "|";	cout.flush();
+			cout  <<xSquare->color <<  "|";
 			xSquare = xSquare->neighbours[2];
 		}
 		counter = 0;
 		cout << endl;
 		for (int i = 0; i < (width*2+1); i++) {
-			cout << "-" ;	cout.flush();
+			cout << "-" ;
 		}
-		cout << endl;	cout.flush();
+		cout << endl;
 		ySquare = ySquare->neighbours[4];		
 		}
 }//gobord::print
 
 void Goboard::createBoard(){
  createCols(height, width);
-//createRow(3);
 }
 
 

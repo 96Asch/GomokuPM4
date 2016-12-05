@@ -1,6 +1,5 @@
 // file main.cc
 #include <iostream>
-
 #include "goboard.h"
 #include "stack.h"
 
@@ -41,19 +40,32 @@ int readDigit(int maxNumber) {
 	cout << "You entered: " << res << endl;
 	return res;
 }
+
+void readSize(int & height, int & width) {
+	while (true) {
+		cout << "Enter a height: ";
+		height = readDigit(50);
+		cout << "Enter a width: ";
+		width = readDigit(50);
+		if (width < 15 || height < 15) {
+			cout << "Please enter a height and width above 15" << endl;
+		}
+		else {
+			break;
+		}
+	}
+}
+
+void printMenu() {
+	int height, width;
+	readSize(height,width);
+	Goboard Gobord(height, width);
+	Gobord.createBoard();
+	Gobord.print();
+}
+
 int main ( ) {
-  Goboard Gobord;
-
-  Stack stack;
-  stack.push(1,2);
-  stack.push(3,4);
-
-  int from, to;
-  stack.pop(from, to);
-  cout << from << ", " << to << endl;
-  cout << stack.isEmpty() << endl;
-  stack.pop(from, to);
-  cout << from << ", " << to << endl;
-  cout << stack.isEmpty() << endl;
+	printMenu();
+  cin.get();
   return 0;
 }//main

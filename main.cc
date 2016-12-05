@@ -3,6 +3,11 @@
 #include "goboard.h"
 #include "stack.h"
 
+#define BLACK 'B'
+#define WHITE 'W'
+#define EMPTY ' '
+
+
 using namespace std;
 
 // Returns a user given option.
@@ -62,10 +67,17 @@ void printMenu() {
 	Goboard Gobord(height, width);
 	Gobord.createBoard();
 	Gobord.print();
+	Gobord.move(BLACK, 2, 2);
+	Gobord.move(WHITE, 2, 2);
+	Gobord.move(WHITE, 2, 3);
+	Gobord.move(BLACK, 2, 4);
+	Gobord.print();
+	cin.get();
+	
 }
 
 int main ( ) {
-	printMenu();
+  printMenu();
   cin.get();
   return 0;
 }//main

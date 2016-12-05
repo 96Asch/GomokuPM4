@@ -14,9 +14,8 @@ Stack::~Stack(){
 	int from, to;
 	while(!isEmpty()){
 		pop(from, to);
-		cout << from << ", " << to << endl;
 	}
-	cout << "Stack is destroyed" << endl;
+	cout << "Stack is empty" << endl;
 }
 
 //Add an integer to the stack

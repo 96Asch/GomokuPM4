@@ -1,8 +1,13 @@
 // file gobord.cc
 #include "goboard.h"
-
+#include "stack.h"
+#include <cstdlib>
 #include <iostream>
 using namespace std;
+
+#define BLACK 'B'
+#define WHITE 'W'
+#define EMPTY ' '
 
 Goboard::Goboard ( ) {
 	height = minHeight;
@@ -50,7 +55,43 @@ void Goboard::print ( ) {
 }//gobord::print
 
 void Goboard::createBoard(){
- createCols(height, width);
+	createCols(height, width);
+}
+
+void Goboard::move(char color, int i, int j) {
+	BoardSquare* square;
+	square = getSquareAt(i,j);
+	if (square->color != WHITE && square->color != BLACK) {
+		square->color = color;
+		stack.push(i,j);
+
+	}
+	else {
+		cout << "Space is already occupied" << endl;
+	}
+}
+
+void Goboard::undoMove() {
+	BoardSquare* squareC, *squareH;
+	int y = 0, x = 0;
+	if (!(stack).isEmpty()) {
+		stack.pop(y, x);
+		squareC = getSquareAt(y, x);
+		squareC->color = EMPTY;
+		stack.pop(y, x);
+
+	}
+	else {
+		cout << "No moves to undo" << endl;
+	}
+}
+
+void Goboard::randomMove(char color, int & i, int & j) {
+	
+}
+
+void Goboard::moveHuman(char color, int & i, int & j) {
+
 }
 
 

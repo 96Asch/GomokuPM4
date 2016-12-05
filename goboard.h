@@ -1,6 +1,16 @@
 // file gobord.h
 #include <iostream>
+#include "stack.h"
 using namespace std;
+
+#define BLACK 'B'
+#define WHITE 'W'
+#define EMPTY ' '
+
+struct Player {
+	char color;
+};
+
 struct BoardSquare {
     char color;          							 //			  7 0 1
 	BoardSquare* neighbours[8] = {NULL};			 //Entrance   6   2    Exit
@@ -13,8 +23,10 @@ class Goboard {
 	BoardSquare* entrance;
 	BoardSquare* exit;
 	BoardSquare* leftUpper;
-	int height, width, minHeight = 15, minWidth = 15;
 	
+	int height, width, minHeight = 15, minWidth = 15;
+	Stack stack;
+	Stack* st = &stack;
 	void zip(BoardSquare* prevSquare, BoardSquare* nextSquare) {
 		BoardSquare* temp = prevSquare;
 		int countWidth = 1;
@@ -68,7 +80,7 @@ class Goboard {
 		entrance = NULL;
 		exit = NULL;
     	for(int i = 0; i < squares; i++){
-    		temp = addSquare(' ');
+    		temp = addSquare(EMPTY);
     	}
 		return temp;
     };
@@ -100,6 +112,11 @@ class Goboard {
 		
 	};
 
+	bool isOccupied(int y, int x) {
+		BoardSquare* square = getSquareAt(y, x);
+		return(square->color == WHITE || square->color == BLACK);
+	};
+
   public:
     Goboard ( );
     Goboard (int height, int width);
@@ -111,5 +128,6 @@ class Goboard {
     bool done ( );
     bool victory (char & color);
     void move (char color, int i, int j);
+	void undoMove ( );
     // TODO
 };//gobord

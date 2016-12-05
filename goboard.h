@@ -47,7 +47,6 @@ class Goboard {
 			prevSquare = prevSquare->neighbours[2];
 			nextSquare = nextSquare->neighbours[2];
 		}
-	
 	};
 
 	void connectVert(BoardSquare* prevSquare, BoardSquare* nextSquare) {
@@ -112,8 +111,7 @@ class Goboard {
 		
 	};
 
-	bool isOccupied(int y, int x) {
-		BoardSquare* square = getSquareAt(y, x);
+	bool isOccupied(BoardSquare* square) {
 		return(square->color == WHITE || square->color == BLACK);
 	};
 
@@ -127,7 +125,7 @@ class Goboard {
     void print ( );
     bool done ( );
     bool victory (char & color);
-    void move (char color, int i, int j);
+    void move (char color, int i, int j, bool & succes);
 	void undoMove ( );
     // TODO
 };//gobord

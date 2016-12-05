@@ -1,8 +1,8 @@
 // file gobord.cc
 #include "goboard.h"
 #include "stack.h"
-#include <cstdlib>
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 #define BLACK 'B'
@@ -14,6 +14,7 @@ Goboard::Goboard ( ) {
 	width = minWidth;
 	entrance = NULL;
 	exit = NULL;
+	srand(height);
 }//gobord::gobord
 
 Goboard::Goboard(int h, int w) {
@@ -21,6 +22,7 @@ Goboard::Goboard(int h, int w) {
 	width = w;
 	entrance = NULL;
 	exit = NULL;
+	srand(width);
 }//gobord::gobord
 
 Goboard::~Goboard ( ) {
@@ -58,12 +60,13 @@ void Goboard::createBoard(){
 	createCols(height, width);
 }
 
-void Goboard::move(char color, int i, int j) {
+void Goboard::move(char color, int i, int j, bool & success) {
 	BoardSquare* square;
 	square = getSquareAt(i,j);
-	if (square->color != WHITE && square->color != BLACK) {
+	if (!isOccupied(square)) {
 		square->color = color;
 		stack.push(i,j);
+		success = true;
 
 	}
 	else {
@@ -75,19 +78,23 @@ void Goboard::undoMove() {
 	BoardSquare* squareC, *squareH;
 	int y = 0, x = 0;
 	if (!(stack).isEmpty()) {
-		stack.pop(y, x);
-		squareC = getSquareAt(y, x);
-		squareC->color = EMPTY;
-		stack.pop(y, x);
-
+		for (int i = 0; i < 2; i++) {
+			stack.pop(y, x);
+			squareC = getSquareAt(y, x);
+			squareC->color = EMPTY;	
+		}
 	}
 	else {
 		cout << "No moves to undo" << endl;
 	}
 }
 
-void Goboard::randomMove(char color, int & i, int & j) {
-	
+void Goboard::randomMove(char color, int & y, int & x) {
+	y = rand() % height, x = rand() % width;
+	bool success = false;
+	while (!success) {
+		move(color, y, x, success);
+	}
 }
 
 void Goboard::moveHuman(char color, int & i, int & j) {

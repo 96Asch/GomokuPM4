@@ -52,8 +52,8 @@ void readSize(int & height, int & width) {
 		height = readDigit(50);
 		cout << "Enter a width: ";
 		width = readDigit(50);
-		if (width < 15 || height < 15) {
-			cout << "Please enter a height and width above 15" << endl;
+		if (width < 10 || height < 10) {
+			cout << "Please enter a height and width above 10" << endl;
 		}
 		else {
 			break;
@@ -62,15 +62,15 @@ void readSize(int & height, int & width) {
 }
 
 void printMenu() {
-	int height, width;
+	int height, width, y, x;
 	readSize(height,width);
 	Goboard Gobord(height, width);
 	Gobord.createBoard();
 	Gobord.print();
-	Gobord.move(BLACK, 2, 2);
-	Gobord.move(WHITE, 2, 2);
-	Gobord.move(WHITE, 2, 3);
-	Gobord.move(BLACK, 2, 4);
+	Gobord.randomMove(BLACK, y, x);
+	Gobord.randomMove(WHITE, y, x);
+	Gobord.randomMove(BLACK, y, x);
+	Gobord.randomMove(WHITE, y, x);
 	Gobord.print();
 	cin.get();
 	

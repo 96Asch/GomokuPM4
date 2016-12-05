@@ -2,15 +2,16 @@
 #include <iostream>
 using namespace std;
 struct BoardSquare {
-    char color;          							 //      7 0 1
-	BoardSquare* neighbours[8];						 //prev  6   2  next
-						      						 //      5 4 3
+    char color;          							 //			  7 0 1
+	BoardSquare* neighbours[8] = {NULL};			 //Entrance   6   2    Exit
+						      						 //			  5 4 3
 }; // a square on the board
 
 class Goboard {
   private:
-	BoardSquare* entrance = NULL;
-	BoardSquare* exit = NULL;
+	BoardSquare* entrance;
+	BoardSquare* exit;
+	BoardSquare* leftUpper;
     int height, width;
 	
 	void zip(BoardSquare* prevSquare, BoardSquare* nextSquare) {
@@ -20,6 +21,7 @@ class Goboard {
 			nextSquare->neighbours[1] = prevSquare->neighbours[2];
 //			prevSquare->neighbours[6]->neighbours[3] = nextSquare;
 //			prevSquare->neighbours[2]->neighbours[5] = nextSquare;
+			//cout << prevSquare->neighbours[6] << endl;
 			prevSquare = prevSquare->neighbours[2];
 			nextSquare = nextSquare->neighbours[2];
 		}
@@ -33,7 +35,7 @@ class Goboard {
 			prevSquare->neighbours[4] = nextSquare;
 			nextSquare->neighbours[0] = prevSquare;
 
-			cout << " " << temp->color << " ";
+			//cout << " " << temp->color << " ";
 			prevSquare = prevSquare->neighbours[2];
 			nextSquare = nextSquare->neighbours[2];
 		}
@@ -56,24 +58,33 @@ class Goboard {
 
     BoardSquare* createRow(int squares){
 		BoardSquare* temp;
-    	for(int i = 0; i < squares; i++){
-    		temp = addSquare('X');
-    	}
 		entrance = NULL;
 		exit = NULL;
+    	for(int i = 0; i < squares; i++){
+    		temp = addSquare('X');
+	//		cout << "square added " << i << endl;
+    	}
 		return temp;
     };
 
 	void createCols(int h, int w) {
 		BoardSquare* prev, *next = NULL;
-		for (int i = 0; i <= h; i++) {
+		for (int i = 0; i < h; i++) {
 			prev = next;
 			next = createRow(w);
+			if (i == 0) {
+				leftUpper = next;
+			}
 			if (i >= 1) {
 				connectVert(prev, next);
-				zip(prev, next);
-				cout << endl;
+				//zip(prev, next);
+				//cout << endl;
+	//			cout << prev << " down neighbour: " << prev->neighbours[4] << endl;
+	//			cout << next << " up neighbour:" << next->neighbours[0] << endl;
 			}	
+	//		cout << prev << endl;
+	//		cout << next << endl;
+			
 		}
 	};
 

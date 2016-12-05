@@ -15,7 +15,6 @@ Goboard::~Goboard ( ) {
 
 void Goboard::print ( ) {
 	BoardSquare* ySquare = leftUpper, *xSquare = leftUpper;
-	int x = 0;
 	while (ySquare != NULL) {
 		xSquare = ySquare;
 		while (xSquare != NULL) {
@@ -28,7 +27,7 @@ void Goboard::print ( ) {
 }//gobord::print
 
 void Goboard::createBoard(){
- createCols(5,5);
+ createCols(height, width);
 //createRow(3);
 }
 

@@ -12,16 +12,26 @@ class Goboard {
 	BoardSquare* entrance;
 	BoardSquare* exit;
 	BoardSquare* leftUpper;
-    int height, width;
+    int height = 3, width = 3;
 	
 	void zip(BoardSquare* prevSquare, BoardSquare* nextSquare) {
 		BoardSquare* temp = prevSquare;
+		int countWidth = 1;
 		while (prevSquare != NULL && nextSquare != NULL) {
 			nextSquare->neighbours[7] = prevSquare->neighbours[6];
 			nextSquare->neighbours[1] = prevSquare->neighbours[2];
-//			prevSquare->neighbours[6]->neighbours[3] = nextSquare;
-//			prevSquare->neighbours[2]->neighbours[5] = nextSquare;
+			if (countWidth == 1) {
+				prevSquare->neighbours[2]->neighbours[5] = nextSquare;
+			}
+			else if (countWidth == width) {
+				prevSquare->neighbours[6]->neighbours[3] = nextSquare;
+			}
+			else {
+				prevSquare->neighbours[2]->neighbours[5] = nextSquare;
+				prevSquare->neighbours[6]->neighbours[3] = nextSquare;
+			}
 			//cout << prevSquare->neighbours[6] << endl;
+			countWidth++;
 			prevSquare = prevSquare->neighbours[2];
 			nextSquare = nextSquare->neighbours[2];
 		}
@@ -62,7 +72,6 @@ class Goboard {
 		exit = NULL;
     	for(int i = 0; i < squares; i++){
     		temp = addSquare('X');
-	//		cout << "square added " << i << endl;
     	}
 		return temp;
     };
@@ -77,7 +86,7 @@ class Goboard {
 			}
 			if (i >= 1) {
 				connectVert(prev, next);
-				//zip(prev, next);
+				zip(prev, next);
 				//cout << endl;
 	//			cout << prev << " down neighbour: " << prev->neighbours[4] << endl;
 	//			cout << next << " up neighbour:" << next->neighbours[0] << endl;

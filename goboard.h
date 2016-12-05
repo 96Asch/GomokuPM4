@@ -12,7 +12,7 @@ class Goboard {
 	BoardSquare* entrance;
 	BoardSquare* exit;
 	BoardSquare* leftUpper;
-    int height = 3, width = 3;
+    int height, width;
 	
 	void zip(BoardSquare* prevSquare, BoardSquare* nextSquare) {
 		BoardSquare* temp = prevSquare;
@@ -71,7 +71,7 @@ class Goboard {
 		entrance = NULL;
 		exit = NULL;
     	for(int i = 0; i < squares; i++){
-    		temp = addSquare('X');
+    		temp = addSquare(' ');
     	}
 		return temp;
     };
@@ -95,6 +95,19 @@ class Goboard {
 	//		cout << next << endl;
 			
 		}
+	};
+
+	BoardSquare* getSquareAt(int x, int y) {
+		BoardSquare* square = leftUpper;	
+		for (int i = 0; i < x; i++) {
+			square = square->neighbours[4];
+		}
+		for (int i = 0; i < y; i++) {
+			square = square->neighbours[2];
+		}
+
+		return square;
+		
 	};
 
   public:

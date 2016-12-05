@@ -5,6 +5,15 @@
 using namespace std;
 
 Goboard::Goboard ( ) {
+	height = 5;
+	width = 5;
+	entrance = NULL;
+	exit = NULL;
+}//gobord::gobord
+
+Goboard::Goboard(int h, int w) {
+	height = h;
+	width = w;
 	entrance = NULL;
 	exit = NULL;
 }//gobord::gobord
@@ -15,14 +24,29 @@ Goboard::~Goboard ( ) {
 
 void Goboard::print ( ) {
 	BoardSquare* ySquare = leftUpper, *xSquare = leftUpper;
+	int counter = 0;
+	for (int i = 0; i < (width * 2 + 1); i++) {
+		cout << "-";
+	}
+	cout << endl;
 	while (ySquare != NULL) {
 		xSquare = ySquare;
 		while (xSquare != NULL) {
-			cout << xSquare->color << " ";
+			counter++;
+			if (counter == 1) {
+				cout << "|";
+			}
+			cout << xSquare->color << "|";
+			//cout << xSquare <<  " ";
 			xSquare = xSquare->neighbours[2];
 		}
-		ySquare = ySquare->neighbours[4];
+		counter = 0;
 		cout << endl;
+		for (int i = 0; i < (width*2+1); i++) {
+			cout << "-" ;
+		}
+		cout << endl;
+		ySquare = ySquare->neighbours[4];		
 		}
 }//gobord::print
 
@@ -31,9 +55,7 @@ void Goboard::createBoard(){
 //createRow(3);
 }
 
-void rits(BoardSquare* up, BoardSquare* down){
 
-}
 
 
 // TODO

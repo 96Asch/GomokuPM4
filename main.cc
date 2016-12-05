@@ -42,7 +42,7 @@ int readDigit(int maxNumber) {
 	return res;
 }
 int main ( ) {
-  Goboard Gobord;
+  Goboard Gobord(3,3);
   Gobord.createBoard();
   Gobord.print();
   cin.get();

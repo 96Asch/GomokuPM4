@@ -5,6 +5,7 @@ struct BoardSquare {
     char color;          							 //			  7 0 1
 	BoardSquare* neighbours[8] = {NULL};			 //Entrance   6   2    Exit
 						      						 //			  5 4 3
+	
 }; // a square on the board
 
 class Goboard {
@@ -12,7 +13,7 @@ class Goboard {
 	BoardSquare* entrance;
 	BoardSquare* exit;
 	BoardSquare* leftUpper;
-    int height, width;
+	int height, width, minHeight = 15, minWidth = 15;
 	
 	void zip(BoardSquare* prevSquare, BoardSquare* nextSquare) {
 		BoardSquare* temp = prevSquare;
@@ -30,7 +31,6 @@ class Goboard {
 				prevSquare->neighbours[2]->neighbours[5] = nextSquare;
 				prevSquare->neighbours[6]->neighbours[3] = nextSquare;
 			}
-			//cout << prevSquare->neighbours[6] << endl;
 			countWidth++;
 			prevSquare = prevSquare->neighbours[2];
 			nextSquare = nextSquare->neighbours[2];
@@ -41,11 +41,8 @@ class Goboard {
 	void connectVert(BoardSquare* prevSquare, BoardSquare* nextSquare) {
 		BoardSquare* temp = prevSquare;
 		while (prevSquare != NULL && nextSquare != NULL) {
-
 			prevSquare->neighbours[4] = nextSquare;
 			nextSquare->neighbours[0] = prevSquare;
-
-			//cout << " " << temp->color << " ";
 			prevSquare = prevSquare->neighbours[2];
 			nextSquare = nextSquare->neighbours[2];
 		}
@@ -87,13 +84,7 @@ class Goboard {
 			if (i >= 1) {
 				connectVert(prev, next);
 				zip(prev, next);
-				//cout << endl;
-	//			cout << prev << " down neighbour: " << prev->neighbours[4] << endl;
-	//			cout << next << " up neighbour:" << next->neighbours[0] << endl;
-			}	
-	//		cout << prev << endl;
-	//		cout << next << endl;
-			
+			}					
 		}
 	};
 

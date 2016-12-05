@@ -41,10 +41,32 @@ int readDigit(int maxNumber) {
 	cout << "You entered: " << res << endl;
 	return res;
 }
+
+void readSize(int & height, int & width) {
+	while (true) {
+		cout << "Enter a height: ";
+		height = readDigit(50);
+		cout << "Enter a width: ";
+		width = readDigit(50);
+		if (width < 15 || height < 15) {
+			cout << "Please enter a height and width above 15" << endl;
+		}
+		else {
+			break;
+		}
+	}
+}
+
+void menu() {
+	int height, width;
+	readSize(height,width);
+	Goboard Gobord(height, width);
+	Gobord.createBoard();
+	Gobord.print();
+}
+
 int main ( ) {
-  Goboard Gobord(3,3);
-  Gobord.createBoard();
-  Gobord.print();
+	menu();
   cin.get();
   return 0;
 }//main

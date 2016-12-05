@@ -26,26 +26,25 @@ void Goboard::print ( ) {
 	BoardSquare* ySquare = leftUpper, *xSquare = leftUpper;
 	int counter = 0;
 	for (int i = 0; i < (width * 2 + 1); i++) {
-		cout << "-";
+		cout << "-";	cout.flush();
 	}
-	cout << endl;
+	cout << endl;	cout.flush();
 	while (ySquare != NULL) {
 		xSquare = ySquare;
 		while (xSquare != NULL) {
 			counter++;
 			if (counter == 1) {
-				cout << "|";
+				cout << "|";	cout.flush();
 			}
-			cout << xSquare->color << "|";
-			//cout << xSquare <<  " ";
+			cout  <<xSquare->color <<  "|";	cout.flush();
 			xSquare = xSquare->neighbours[2];
 		}
 		counter = 0;
 		cout << endl;
 		for (int i = 0; i < (width*2+1); i++) {
-			cout << "-" ;
+			cout << "-" ;	cout.flush();
 		}
-		cout << endl;
+		cout << endl;	cout.flush();
 		ySquare = ySquare->neighbours[4];		
 		}
 }//gobord::print

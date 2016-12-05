@@ -6,8 +6,7 @@
 #define STACK_H_
 
 struct Move {
-	int moveTo;
-	int moveFrom;
+	int x,y;
 	Move* nextMove;
 };
 
@@ -16,8 +15,8 @@ class Stack {
 	public:
 		Stack();
 		~Stack();
-		void push(int moveFrom, int moveTo);
-		void pop(int & moveFrom, int & moveTo);
+		void push(int y, int x);
+		void pop(int & y, int & x);
 		bool isEmpty();
 		Move peek();
 

@@ -20,22 +20,22 @@ Stack::~Stack(){
 }
 
 //Add an integer to the stack
-void Stack::push(int moveFrom, int moveTo){
+void Stack::push(int y, int x){
 	Move* newMove = new Move;
-	newMove->moveFrom = moveFrom;
-	newMove->moveTo = moveTo;
+	newMove->y = y;
+	newMove->x = x;
 	newMove->nextMove = lastMove;
 	lastMove = newMove;
-	cout << "Pushed " << newMove << " into stack with: " << newMove->moveFrom << ", " << newMove->moveTo << endl;
+	cout << "Pushed Move: " << newMove << " into stack with coordinates: (" << newMove->y << ", " << newMove->x << ")." << endl;
 }
 
 //Remove last added integer from the stack
-void Stack::pop(int & moveFrom, int & moveTo){
+void Stack::pop(int & y, int & x){
 	Move* removedMove = lastMove;
-	moveFrom = removedMove->moveFrom;
-	moveTo = removedMove->moveTo;
+	y = removedMove->y;
+	x = removedMove->x;
 	lastMove = lastMove->nextMove;
-	cout << "Popped " << removedMove << " from stack with: " << removedMove->moveFrom << ", " << removedMove->moveTo << endl;
+	cout << "Popped Move: " << removedMove << " from stack with coordinates: (" << removedMove->y << ", " << removedMove->x << ")." << endl;
 	delete removedMove;
 }
 

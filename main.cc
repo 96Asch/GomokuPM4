@@ -7,6 +7,9 @@
 #define WHITE 'W'
 #define EMPTY ' '
 
+#define PVC 1
+#define CVC 2
+
 
 using namespace std;
 
@@ -52,7 +55,7 @@ void readSize(int & height, int & width) {
 		height = readDigit(50);
 		cout << "Enter a width: ";
 		width = readDigit(50);
-		if (width <= 5 || height <= 5) {
+		if (width <  5 || height < 5) {
 			cout << "Please enter a height and width above 4" << endl;
 		}
 		else {
@@ -67,10 +70,12 @@ void printMenu() {
 	Goboard Gobord(height, width);
 	Gobord.createBoard();
 	Gobord.print();
-	Gobord.randomMove(BLACK, y, x);
-	Gobord.randomMove(WHITE, y, x);
-	Gobord.randomMove(BLACK, y, x);
-	Gobord.randomMove(WHITE, y, x);
+	Gobord.setGameType(2);
+	Gobord.setPlayerCol(BLACK);
+	bool succ = false;
+	char color = BLACK;
+
+	Gobord.turn(color, y, x, succ);
 	Gobord.print();
 	cin.get();
 	

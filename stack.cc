@@ -6,6 +6,7 @@ using namespace std;
 
 //Constructor of the stack
 Stack::Stack(){
+	size = 0;
 	lastMove = NULL;
 }
 

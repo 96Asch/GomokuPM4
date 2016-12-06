@@ -23,10 +23,11 @@ class Goboard {
 	BoardSquare* entrance;
 	BoardSquare* exit;
 	BoardSquare* leftUpper;
-	
 	int height, width, minHeight = 5, minWidth = 5;
 	Stack stack;
-	Stack* st = &stack;
+	bool gameIsOver;
+	int gameType;
+	char playerCol;
 	void zip(BoardSquare* prevSquare, BoardSquare* nextSquare) {
 		BoardSquare* temp = prevSquare;
 		int countWidth = 1;
@@ -112,7 +113,7 @@ class Goboard {
 	};
 
 	bool isOccupied(BoardSquare* square) {
-		return(square->color == WHITE || square->color == BLACK);
+		return(square->color == BLACK || square->color == WHITE);
 	};
 
   public:
@@ -120,12 +121,19 @@ class Goboard {
     Goboard (int height, int width);
     ~Goboard ( );
     void createBoard ( );
-    void randomMove (char color, int & i, int & j);
-    void moveHuman (char color, int & i, int & j);
+	bool getGameStatus();
+	void setGameStatus(bool status);
+	int getGameType();
+	void setGameType(int gametype);
+	char getPlayerCol();
+	void setPlayerCol(char color);
+    void randomMove (char color, int & i, int & j, bool & succ);
+    void moveHuman (char color, int & i, int & j, bool & succ);
+	void turn(char & color, int & y, int & x, bool & succ);
     void print ( );
-    bool done ( );
-    bool victory (char & color);
-	bool gameOver();
+    bool victory (BoardSquare* square, char & color);
+	int countConsecSquare(BoardSquare* square, int dir, int opdir, char color);
+	void gameOver(BoardSquare* square, char & color);
 	bool stalemate();
     void move (char color, int i, int j, bool & succes);
 	void undoMove ( );

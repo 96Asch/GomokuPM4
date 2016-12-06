@@ -1,10 +1,11 @@
 /*
-	Array-based implementation of a stack to store moves
+	Pointer-based implementation of a stack to store moves
  */
 
 #ifndef STACK_H_
 #define STACK_H_
 
+//Struct of a move.
 struct Move {
 	int x,y;
 	Move* nextMove;

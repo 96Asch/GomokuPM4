@@ -16,7 +16,7 @@ Stack::~Stack(){
 	while(!isEmpty()){
 		pop(from, to);
 	}
-	cout << "Stack is empty" << endl;
+	//cout << "Stack is empty" << endl;
 }
 
 //Add an integer to the stack
@@ -27,7 +27,7 @@ void Stack::push(int y, int x){
 	newMove->nextMove = lastMove;
 	lastMove = newMove;
 	size++;
-	cout << "Pushed Move: " << newMove << " into stack with coordinates: (" << newMove->y << ", " << newMove->x << ")." << endl;
+	//cout << "Pushed Move: " << newMove << " into stack with coordinates: (" << newMove->y << ", " << newMove->x << ")." << endl;
 }
 
 //Remove last added integer from the stack
@@ -37,14 +37,16 @@ void Stack::pop(int & y, int & x){
 	x = removedMove->x;
 	lastMove = lastMove->nextMove;
 	size--;
-	cout << "Popped Move: " << removedMove << " from stack with coordinates: (" << removedMove->y << ", " << removedMove->x << ")." << endl;
+	//cout << "Popped Move: " << removedMove << " from stack with coordinates: (" << removedMove->y << ", " << removedMove->x << ")." << endl;
 	delete removedMove;
 }
 
+//Returns true when the stack is empty.
 bool Stack::isEmpty(){
 	return(lastMove == NULL);
 }
 
+//Returns the size of the stack.
 int Stack::getLength() {
 	return size;
 }

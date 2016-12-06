@@ -49,6 +49,7 @@ int readDigit(int maxNumber) {
 	return res;
 }
 
+//Reads a user given size for the board.
 void readSize(int & height, int & width) {
 	while (true) {
 		cout << "Enter a height: ";
@@ -64,19 +65,40 @@ void readSize(int & height, int & width) {
 	}
 }
 
+//Reads a user given color for player 1.
+void readPlayerCol(Goboard & goboard, char & color) {
+	char col;
+	while (true) {
+		cout << "Enter color: ";
+		cin >> col;
+		if (col != BLACK && col != WHITE) {
+			cout << "Enter valid color" << endl;
+		}
+		else {
+			goboard.setPlayerCol(col);
+			break;
+		}
+	}
+}
+
+//Function for the main menu.
 void printMenu() {
-	int height, width, y, x;
+	int height, width, y, x, z(0);
+	char color = BLACK;
+	bool succ = false;
 	readSize(height,width);
 	Goboard Gobord(height, width);
 	Gobord.createBoard();
-	Gobord.print();
+	getOption(color);
+	readPlayerCol(Gobord,color);
 	Gobord.setGameType(2);
-	Gobord.setPlayerCol(BLACK);
-	bool succ = false;
-	char color = BLACK;
-
-	Gobord.turn(color, y, x, succ);
 	Gobord.print();
+
+	while (!Gobord.getGameStatus()) {
+		Gobord.turn(color, y, x, succ);
+		Gobord.print();
+	}
+	
 	cin.get();
 	
 }

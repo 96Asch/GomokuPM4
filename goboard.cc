@@ -5,29 +5,28 @@
 #include <cstdlib>
 using namespace std;
 
+//Definitions for colors and empty spaces.
 #define BLACK 'B'
 #define WHITE 'W'
 #define EMPTY ' '
 
+//Constructor for a board with a set height and width.
 Goboard::Goboard ( ) {
-	height = minHeight;
-	width = minWidth;
-	entrance = NULL;
-	exit = NULL;
-	srand(height);
-	gameIsOver = false;
+	height = minHeight, width = minWidth;
+	entrance = NULL, exit = NULL;
 	gameType = 0;
+	srand(height*width-height);
+	gameIsOver = false, usedUndo = false;
 	playerCol = EMPTY;
 }//gobord::gobord
 
+ //Constructor for a board with a given height and width.
 Goboard::Goboard(int h, int w) {
-	height = h;
-	width = w;
-	entrance = NULL;
-	exit = NULL;
-	srand(width);
-	gameIsOver = false;
+	height = h, width = w;
 	gameType = 0;
+	entrance = NULL, exit = NULL;
+	srand(width-height*width);
+	gameIsOver = false, usedUndo = false;
 	playerCol = EMPTY;
 }//gobord::gobord
 
@@ -35,30 +34,37 @@ Goboard::~Goboard ( ) {
   // TODO
 }//gobord::~gobord
 
+//Gets the status of the game.
 bool Goboard::getGameStatus() {
 	return gameIsOver;
 }
 
-void Goboard::setGameStatus(bool status) {
-	gameIsOver = status;
-}
-
+//Gets the type of game played.
 int Goboard::getGameType() {
 	return gameType;
 }
 
+//Sets the type of game to play.
 void Goboard::setGameType(int gametype){
 	gameType = gametype;
 }
 
+//Gets the player 1 color.
 char Goboard::getPlayerCol() {
 	return playerCol;
 }
 
+//Sets the player 1 color.
 void Goboard::setPlayerCol(char color) {
 	playerCol = color;
 }
 
+//Returns true if the undoMove function has been used.
+bool Goboard::undoUsed() {
+	return usedUndo;
+}
+
+//Function to print the status of the board.
 void Goboard::print ( ) {
 	BoardSquare* ySquare = leftUpper, *xSquare = leftUpper;
 	int counter = 0;
@@ -86,10 +92,12 @@ void Goboard::print ( ) {
 		}
 }//gobord::print
 
+//Creates a board with a certain height and width.
 void Goboard::createBoard(){
 	createCols(height, width);
 }
 
+//Function to place a piece on the board
 void Goboard::move(char color, int i, int j, bool & success) {
 	if (i<height&&j<width) {
 		BoardSquare* square;
@@ -110,7 +118,44 @@ void Goboard::move(char color, int i, int j, bool & success) {
 	}
 }
 
+//Undo the last player move.
+void Goboard::undoMove() {
+	BoardSquare* squareC, *squareH;
+	int y = 0, x = 0;
+	if (!(stack).isEmpty()) {
+		for (int i = 0; i < 2; i++) {
+			stack.pop(y, x);
+			squareC = getSquareAt(y, x);
+			squareC->color = EMPTY;	
+		}
+		usedUndo = true;
+	}
+	else {
+		cout << "No moves to undo" << endl;
+	}
+}
+
+//Function to place a piece on a random position.
+void Goboard::randomMove(char color, int & y, int & x, bool & succ) {
+	succ = false;
+	while (!succ) {
+		y = rand() % height, x = rand() % width;
+		move(color, y, x, succ);
+	}
+}
+
+//Function to let a human player place a piece.
+void Goboard::moveHuman(char color, int & i, int & j, bool & succ) {
+	cout << "Enter x-coordinate ";
+	cin >> j;
+	cout << "Enter y-coordinate ";
+	cin >> i;
+	move(color, i, j, succ);
+}
+
+//A turn where a player or a computer can do a move.
 void Goboard::turn(char & color, int & y, int & x, bool & succ) {
+	usedUndo = false;
 	if (getGameType() == 1 && !getGameStatus()) {
 		if (playerCol == BLACK && stack.getLength() % 2 == 0)
 			moveHuman(color, y, x, succ);
@@ -123,67 +168,15 @@ void Goboard::turn(char & color, int & y, int & x, bool & succ) {
 		else if (playerCol == BLACK && stack.getLength() % 2 == 1) {
 			randomMove(color, y, x, succ);
 		}
-
-		if (color == BLACK) {
-			color = WHITE;
-		}
-		else {
-			color = BLACK;
-		}
+		switchColor(color);
 	}
 	else if (getGameType() == 2 && !getGameStatus()) {
 		randomMove(color, y, x, succ);
-		if (color == BLACK) {
-			color = WHITE;
-		}
-		else {
-			color = BLACK;
-		}
+		switchColor(color);
 	}
 }
 
-void Goboard::undoMove() {
-	BoardSquare* squareC, *squareH;
-	int y = 0, x = 0;
-	if (!(stack).isEmpty()) {
-		for (int i = 0; i < 2; i++) {
-			stack.pop(y, x);
-			squareC = getSquareAt(y, x);
-			squareC->color = EMPTY;	
-		}
-	}
-	else {
-		cout << "No moves to undo" << endl;
-	}
-}
-
-void Goboard::randomMove(char color, int & y, int & x, bool & succ) {
-	y = rand() % height, x = rand() % width;
-	succ = false;
-	while (!succ) {
-		move(color, y, x, succ);
-	}
-}
-
-void Goboard::moveHuman(char color, int & i, int & j, bool & succ) {
-	cout << "Enter x-coordinate ";
-	cin >> j;
-	cout << "Enter y-coordinate ";
-	cin >> i;
-	move(color, i, j, succ);
-}
-
-void Goboard::gameOver(BoardSquare* square, char & color) {
-	if (stalemate()) {
-		setGameStatus(true);
-		cout << "Too bad... There is no winner" << endl;
-	}
-	else if (victory(square, color)) {
-		setGameStatus(true);
-		cout << "Congratulations, " << color << " has won the game!" << endl;
-	}
-}
-
+//Function to determine when a game has ended in a stalemate.
 bool Goboard::stalemate() {
 	int totalMoves = 0;
 	totalMoves = width * height;
@@ -195,6 +188,7 @@ bool Goboard::stalemate() {
 	}
 }
 
+//Function to count the number of consecutive squares in each direction.
 int Goboard::countConsecSquare(BoardSquare* square, int direction, int opdirection, char color) {
 	int squareCounter = 1;
 	BoardSquare* temp = square;
@@ -215,7 +209,7 @@ int Goboard::countConsecSquare(BoardSquare* square, int direction, int opdirecti
 	return squareCounter;
 }
 
-
+//Function to determine if a color has won a game.
 bool Goboard::victory(BoardSquare* square, char & color) {
 	if (stack.getLength() >= 9){
 		int vertSeq = countConsecSquare(square, 0, 4, color );
@@ -234,10 +228,14 @@ bool Goboard::victory(BoardSquare* square, char & color) {
 	}
 }
 
-
-
-
-
-
-
-// TODO
+//Function to determine when a game is over.
+void Goboard::gameOver(BoardSquare* square, char & color) {
+	if (stalemate()) {
+		gameIsOver = true;
+		cout << "Too bad... There is no winner" << endl;
+	}
+	else if (victory(square, color)) {
+		gameIsOver = true;
+		cout << "Congratulations, " << color << " has won the game!" << endl;
+	}
+}

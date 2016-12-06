@@ -18,10 +18,11 @@ class Stack {
 		void push(int y, int x);
 		void pop(int & y, int & x);
 		bool isEmpty();
-		Move peek();
+		int getLength();
 
 	private:
 		Move* lastMove;
+		int size;
 
 };
 

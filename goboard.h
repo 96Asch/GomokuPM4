@@ -24,7 +24,7 @@ class Goboard {
 	BoardSquare* exit;
 	BoardSquare* leftUpper;
 	
-	int height, width, minHeight = 15, minWidth = 15;
+	int height, width, minHeight = 5, minWidth = 5;
 	Stack stack;
 	Stack* st = &stack;
 	void zip(BoardSquare* prevSquare, BoardSquare* nextSquare) {
@@ -99,12 +99,12 @@ class Goboard {
 		}
 	};
 
-	BoardSquare* getSquareAt(int x, int y) {
+	BoardSquare* getSquareAt(int y, int x) {
 		BoardSquare* square = leftUpper;	
-		for (int i = 0; i < x; i++) {
+		for (int i = 0; i < y; i++) {
 			square = square->neighbours[4];
 		}
-		for (int i = 0; i < y; i++) {
+		for (int i = 0; i < x; i++) {
 			square = square->neighbours[2];
 		}
 		return square;

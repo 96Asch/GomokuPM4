@@ -52,8 +52,8 @@ void readSize(int & height, int & width) {
 		height = readDigit(50);
 		cout << "Enter a width: ";
 		width = readDigit(50);
-		if (width < 10 || height < 10) {
-			cout << "Please enter a height and width above 10" << endl;
+		if (width <= 5 || height <= 5) {
+			cout << "Please enter a height and width above 4" << endl;
 		}
 		else {
 			break;

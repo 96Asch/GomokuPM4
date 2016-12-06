@@ -125,6 +125,8 @@ class Goboard {
     void print ( );
     bool done ( );
     bool victory (char & color);
+	bool gameOver();
+	bool stalemate();
     void move (char color, int i, int j, bool & succes);
 	void undoMove ( );
     // TODO

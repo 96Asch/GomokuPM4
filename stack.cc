@@ -25,6 +25,7 @@ void Stack::push(int y, int x){
 	newMove->x = x;
 	newMove->nextMove = lastMove;
 	lastMove = newMove;
+	size++;
 	cout << "Pushed Move: " << newMove << " into stack with coordinates: (" << newMove->y << ", " << newMove->x << ")." << endl;
 }
 
@@ -34,6 +35,7 @@ void Stack::pop(int & y, int & x){
 	y = removedMove->y;
 	x = removedMove->x;
 	lastMove = lastMove->nextMove;
+	size--;
 	cout << "Popped Move: " << removedMove << " from stack with coordinates: (" << removedMove->y << ", " << removedMove->x << ")." << endl;
 	delete removedMove;
 }
@@ -42,6 +44,9 @@ bool Stack::isEmpty(){
 	return(lastMove == NULL);
 }
 
+int Stack::getLength() {
+	return size;
+}
 
 
 

@@ -101,6 +101,21 @@ void Goboard::moveHuman(char color, int & i, int & j) {
 
 }
 
+bool Goboard::gameOver() {
+	if (stalemate()) {
+		cout << "Too bad... There is no winner" << endl;
+	}
+}
+
+bool Goboard::stalemate() {
+	int totalMoves = 0;
+	totalMoves = width * height;
+	if (totalMoves == stack.getLength()) {
+		return true;
+	}
+}
+
+
 
 
 

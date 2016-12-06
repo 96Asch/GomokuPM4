@@ -83,7 +83,7 @@ void readPlayerCol(Goboard & goboard, char & color) {
 
 //Function for the main menu.
 void printMenu() {
-	int height, width, y, x, z(0);
+	int height, width, y, x;
 	char color = BLACK;
 	bool succ = false;
 	readSize(height,width);
@@ -98,13 +98,14 @@ void printMenu() {
 		Gobord.turn(color, y, x, succ);
 		Gobord.print();
 	}
-	
+
 	cin.get();
 	
 }
 
 int main ( ) {
-  printMenu();
-  cin.get();
-  return 0;
+	printMenu();
+	
+	cin.get();
+	return 0;
 }//main

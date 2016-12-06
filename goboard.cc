@@ -12,8 +12,8 @@ using namespace std;
 
 //Constructor for a board with a set height and width.
 Goboard::Goboard ( ) {
-	height = minHeight, width = minWidth;
-	entrance = NULL, exit = NULL;
+	height = 5, width = 5;
+	entrance = NULL, exit = NULL, leftUpper = NULL;
 	gameType = 0;
 	srand(height*width-height);
 	gameIsOver = false, usedUndo = false;
@@ -24,7 +24,7 @@ Goboard::Goboard ( ) {
 Goboard::Goboard(int h, int w) {
 	height = h, width = w;
 	gameType = 0;
-	entrance = NULL, exit = NULL;
+	entrance = NULL, exit = NULL, leftUpper = NULL;
 	srand(width-height*width);
 	gameIsOver = false, usedUndo = false;
 	playerCol = EMPTY;
@@ -68,6 +68,7 @@ bool Goboard::undoUsed() {
 void Goboard::print ( ) {
 	BoardSquare* ySquare = leftUpper, *xSquare = leftUpper;
 	int counter = 0;
+	cout << endl;
 	for (int i = 0; i < (width * 2 + 1); i++) {
 		cout << "-";
 	}
@@ -90,6 +91,7 @@ void Goboard::print ( ) {
 		cout << endl;
 		ySquare = ySquare->neighbours[4];		
 		}
+	
 }//gobord::print
 
 //Creates a board with a certain height and width.
@@ -110,7 +112,7 @@ void Goboard::move(char color, int i, int j, bool & success) {
 			gameOver(square, color);
 		}
 		else {
-			cout << "Space is already occupied" << endl;
+			cout << "\rSpace is already occupied" << flush;
 		}
 	}
 	else{

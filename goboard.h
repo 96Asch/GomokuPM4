@@ -13,7 +13,7 @@ using namespace std;
 //Struct for a square on the board.
 struct BoardSquare {
 	char color;          							 //			  7 0 1
-	BoardSquare* neighbours[8] = { NULL };			 //Entrance   6   2    Exit
+	BoardSquare* neighbours[8] = {NULL};			 //Entrance   6   2    Exit
 };						      						 //			  5 4 3	
 
 
@@ -23,7 +23,7 @@ class Goboard {
 	BoardSquare* entrance;
 	BoardSquare* exit;
 	BoardSquare* leftUpper;
-	int height, width, minHeight = 5, minWidth = 5;
+	int height, width;
 	Stack stack;
 	bool gameIsOver;
 	int gameType;
@@ -75,7 +75,6 @@ class Goboard {
 
 	//Function to connect vertical squares with eachother.
 	void connectVert(BoardSquare* prevSquare, BoardSquare* nextSquare) {
-		BoardSquare* temp = prevSquare;
 		while (prevSquare != NULL && nextSquare != NULL) {
 			prevSquare->neighbours[4] = nextSquare;
 			nextSquare->neighbours[0] = prevSquare;
@@ -86,7 +85,6 @@ class Goboard {
 
 	//Function to connect diagonal squares with eachother.
 	void zip(BoardSquare* prevSquare, BoardSquare* nextSquare) {
-		BoardSquare* temp = prevSquare;
 		int countWidth = 1;
 		while (prevSquare != NULL && nextSquare != NULL) {
 			nextSquare->neighbours[7] = prevSquare->neighbours[6];

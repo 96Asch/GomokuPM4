@@ -51,6 +51,10 @@ int Goboard::getGameType() {
 	return gameType;
 }
 
+void Goboard::setGameStatus(bool status) {
+	gameIsOver = status;
+}
+
 //Sets the type of game to play.
 void Goboard::setGameType(int gametype){
 	gameType = gametype;
@@ -117,7 +121,7 @@ void Goboard::move(char color, int i, int j, bool & success) {
 		square = getSquareAt(i, j);
 		if (!isOccupied(square)) {
 			square->color = color;
-			stack.push(i, j);
+		//	stack.push(i, j);
 			success = true;
 			gameOver(square, color);
 		}
@@ -246,4 +250,21 @@ void Goboard::gameOver(BoardSquare* square, char & color) {
 		print();
 		cout << "Congratulations, " << color << " has won the game!" << endl;
 	}
+}
+
+void Goboard::emptyBoard() {
+	BoardSquare* tempY = leftUpper, *tempX = leftUpper;
+	while (tempY != NULL) {
+		tempX = tempY;
+		while (tempX != NULL) {
+			tempX->color = EMPTY;
+			tempX = tempX->neighbours[2];
+		}
+		tempY = tempY->neighbours[4];
+	}
+}
+
+void Goboard::demoMode(char & color, int & y, int & x, bool & succ, char & opt) {
+		
+	turn(color, y, x, succ, opt);	
 }

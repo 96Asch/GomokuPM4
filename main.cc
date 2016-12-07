@@ -54,7 +54,7 @@ void readSize(int & height, int & width) {
 		height = readDigit(50);
 		cout << "Enter a width: ";
 		width = readDigit(50);
-		if (width <  5 || height < 5) {
+		if (width <  2 || height < 2) {
 			cout << "Please enter a height and width above 4" << endl;
 		}
 		else {
@@ -136,9 +136,12 @@ void printMenu() {
 	Gobord.setPlayerCol(color);
 	Gobord.createBoard();
 	Gobord.print();
-	cout << "gametype: " << gametype << endl;
-	cout << "kleur: "<< color << endl;
 	color = BLACK;
+
+//	cout << Gobord.calculateEmptySquares() << endl;
+//	cout << Gobord.calculateUnGames(color) << endl;
+//	cout << Gobord.calculateEmptySquares() << endl;
+
 	while (!Gobord.getGameStatus()) {
 		if (Gobord.getGameType() == PVC && Gobord.getPlayerCol() == color) {
 			playerMenu(color, height, width, x, y, option);

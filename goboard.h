@@ -13,7 +13,7 @@ using namespace std;
 //Struct for a square on the board.
 struct BoardSquare {
 	char color;          							 //			  7 0 1
-	BoardSquare* neighbours[8] = {NULL};			 //Entrance   6   2    Exit
+	BoardSquare* neighbours[8];			 //Entrance   6   2    Exit
 };						      						 //			  5 4 3	
 
 
@@ -133,34 +133,6 @@ class Goboard {
 		}
 	};
 
-	// Converts a stream chars into a single int.
-	void convertCharstoInt(char letter, int & numberToCheck) {
-		int temp = letter - '0';
-		numberToCheck *= 10;
-		numberToCheck += temp;
-	}
-
-	// Returns the digits of a stream of chars up to maxNumber.
-	int readDigit(int maxNumber) {
-		int res = 0;
-		char ch = '\n';
-		while (!isdigit(ch)) {
-			cin.get(ch);
-		}
-		convertCharstoInt(ch, res);
-		while (ch != '\n') {
-			cin.get(ch);
-			if (isdigit(ch) && res < maxNumber) {
-				convertCharstoInt(ch, res);
-			}
-		}
-		if (res > maxNumber) {
-			res /= 10;
-		}
-		cout << "You entered: " << res << endl;
-		return res;
-	}
-
   public:
     Goboard ( );
     Goboard (int height, int width);
@@ -182,5 +154,9 @@ class Goboard {
 	bool stalemate();
     void move (char color, int i, int j, bool & succes);
 	void undoMove ( );
+	void undoMoveUG(int y, int x);
+	void moveUG(char color, int i, int j);
+	int calculateEmptySquares();
+	int calculateUnGames(char color);
     // TODO
 };//gobord

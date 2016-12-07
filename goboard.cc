@@ -3,8 +3,6 @@
 #include "stack.h"
 #include <iostream>
 #include <cstdlib>
-#include <conio.h>
-#include <windows.h>
 using namespace std;
 
 //Definitions for colors and empty spaces.
@@ -155,7 +153,6 @@ void Goboard::undoMove() {
 //Function to place a piece on a random position.
 void Goboard::randomMove(char color, int & y, int & x, bool & succ) {
 	succ = false;
-	//Sleep(1000);
 	while (!succ) {
 		y = rand() % height, x = rand() % width;
 		move(color, y, x, succ);
@@ -276,4 +273,62 @@ void Goboard::gameOver(BoardSquare* square, char & color) {
 		gameIsOver = true;
 		cout << "Congratulations, " << color << " has won the game!" << endl;
 	}
+}
+
+//Undo the last player move.
+void Goboard::undoMoveUG(int y, int x) {
+	BoardSquare* squareC;
+		for (int i = 0; i < 2; i++) {
+			squareC = getSquareAt(y, x);
+			squareC->color = EMPTY;
+		}
+}
+
+
+//Function to place a piece on the board
+void Goboard::moveUG(char color, int i, int j) {
+	if (i<height&&j<width) {
+		BoardSquare* square;
+		square = getSquareAt(i, j);
+		if (!isOccupied(square)) {
+			square->color = color;
+		}
+		else {
+			if (gameType == PVC && playerCol == color) {
+				cout << "Space is already occupied" << endl;
+			}
+		}
+	}
+	else {
+		cout << "Move out of bounds" << endl;
+	}
+}
+
+int Goboard::calculateEmptySquares() {
+	BoardSquare* square;
+	int counter = 0;
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < height; j++) {
+			square = getSquareAt(i, j);
+			if (square->color == EMPTY) {
+				counter++;
+			}
+		}
+	}
+	return counter;
+}
+
+int Goboard::calculateUnGames(char color) {
+	int numGames = 0;
+	if (calculateEmptySquares() == 1) {
+		return 1;
+	}
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < height; j++) {
+			moveUG(color, i, j);
+			numGames = numGames + calculateUnGames(color);
+			undoMoveUG(i, j);
+		}
+	}
+	return numGames;
 }

@@ -24,7 +24,7 @@ Goboard::Goboard ( ) {
 	height = 5, width = 5;
 	entrance = NULL, exit = NULL, leftUpper = NULL;
 	gameType = 0;
-	gameIsOver = false, usedUndo = false;
+	gameIsOver = false;
 	playerCol = EMPTY;
 }//gobord::gobord
 
@@ -33,15 +33,13 @@ Goboard::Goboard(int h, int w) {
 	height = h, width = w;
 	gameType = 0;
 	entrance = NULL, exit = NULL, leftUpper = NULL;
-	gameIsOver = false, usedUndo = false;
+	gameIsOver = false;
 	playerCol = EMPTY;
 }//gobord::gobord
 
 Goboard::~Goboard ( ) {
   // TODO
 }//gobord::~gobord
-
- 
 
 //Gets the status of the game.
 bool Goboard::getGameStatus() {
@@ -68,9 +66,12 @@ void Goboard::setPlayerCol(char color) {
 	playerCol = color;
 }
 
-//Returns true if the undoMove function has been used.
-bool Goboard::undoUsed() {
-	return usedUndo;
+int Goboard::getHeight() {
+	return height;
+}
+
+int Goboard::getWidth() {
+	return width;
 }
 
 //Function to print the status of the board.
@@ -141,62 +142,52 @@ void Goboard::undoMove() {
 			squareC = getSquareAt(y, x);
 			squareC->color = EMPTY;	
 		}
-		usedUndo = true;
 	}
-	else {
-		cout << "No moves to undo" << endl;
-	}
+	else { cout << "No moves to undo" << endl; }
 }
 
 //Function to let a human player place a piece.
-void Goboard::moveHuman(char color, int & i, int & j, bool & succ, bool & undo, char option) {
+void Goboard::moveHuman(char color, int & i, int & j, bool & succ, char option) {
 	switch (option) {
 	case MOVEOPT:
 		move(color, i, j, succ);
 		break;
 	case UNDOOPT:
 		undoMove();
+		succ = false;
 		break;
 	case POSMOVE:
 		// some function here
 		break;
 	default:
 		break;
-	}
-		
+	}		
 }
 
 //A turn where a player or a computer can do a move.
 void Goboard::turn(char & color, int & y, int & x, bool & succ, char & opt) {
-	usedUndo = false;
 	if (getGameType() == PVC && !getGameStatus()) {
 		switch (playerCol) {
 		case BLACK:
-			if (stack.getLength() % 2 == 0) {	moveHuman(color, y, x, succ, usedUndo, opt);	}
+			if (stack.getLength() % 2 == 0) {	moveHuman(color, y, x, succ, opt);	}
 			else { move(color, y, x, succ); }
 			break;
 		case WHITE:
-			if (stack.getLength() % 2 == 1) { moveHuman(color, y, x, succ, usedUndo, opt); }
+			if (stack.getLength() % 2 == 1) { moveHuman(color, y, x, succ, opt); }
 			else { move(color, y, x, succ); }
 			break;
 		default:
 			break;
 		}
-		if (succ) {
-			switchColor(color);
-		}
+		if (succ) {	switchColor(color);	}
 	}
 	else if (getGameType() == CVC && !getGameStatus()) {
 		move(color, y, x, succ);
-		if (succ) {
-			switchColor(color);
-		}
+		if (succ) {	switchColor(color); }
 	}
 	else if (getGameType() == PVP && !getGameStatus()) {
-		moveHuman(color, y, x, succ, usedUndo, opt);
-		if (succ) {
-			switchColor(color);
-		}
+		moveHuman(color, y, x, succ, opt);
+		if (succ) {	switchColor(color); }
 	}
 }
 
@@ -204,32 +195,27 @@ void Goboard::turn(char & color, int & y, int & x, bool & succ, char & opt) {
 bool Goboard::stalemate() {
 	int totalMoves = 0;
 	totalMoves = width * height;
-	if (totalMoves == stack.getLength()) {
-		return true;
-	}
-	else {
-		return false; 
-	}
+	if (totalMoves == stack.getLength()) { return true; }
+	else { return false; }
 }
 
 //Function to count the number of consecutive squares in each direction.
 int Goboard::countConsecSquare(BoardSquare* square, int direction, int opdirection, char color) {
 	int squareCounter = 1;
 	BoardSquare* temp = square;
-	do  {
-		if (temp != square) {
-			squareCounter++;
-		}
-		temp = temp->neighbours[direction];
 
-	} while (temp && temp->color == color);
-	temp = square;
 	do {
-		if (temp != square) {
-			squareCounter++;
-		}
+		if (temp != square) { squareCounter++; }
+		temp = temp->neighbours[direction];
+	} while (temp && temp->color == color);
+	
+	temp = square;
+
+	do {
+		if (temp != square) { squareCounter++; }
 		temp = temp->neighbours[opdirection];
 	} while (temp && temp->color == color);
+
 	return squareCounter;
 }
 
@@ -243,13 +229,9 @@ bool Goboard::victory(BoardSquare* square, char & color) {
 		if (vertSeq >= 5 || horzSeq >= 5 || diaLSeq >= 5 || diaRSeq >= 5) {
 			return true;
 		}
-		else {
-			return false;
-		}
+		else { return false; }
 	}
-	else {
-		return false;
-	}
+	else { return false; }
 }
 
 //Function to determine when a game is over.

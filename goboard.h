@@ -3,6 +3,7 @@
 */
 #include <iostream>
 #include "stack.h"
+#include <fstream>
 using namespace std;
 
 //Definitions for colors and empty spaces.
@@ -26,7 +27,7 @@ class Goboard {
 	int height, width;
 	Stack stack;
 	bool gameIsOver;
-	int gameType;
+	int gameType, winType;
 	int wonCount, tieCount;
 	char playerCol;
 	
@@ -184,7 +185,7 @@ class Goboard {
     void move (char color, int i, int j, bool & succes);
 	void undoMove ();
 	void emptyBoard();
-	void getDemoStats(int it);
+	void getDemoStats(ofstream & file, int it);
 	void reset();
 	// TODO
 };//gobord

@@ -26,6 +26,7 @@ Goboard::Goboard ( ) {
 	entrance = NULL, exit = NULL, leftUpper = NULL;
 	wonCount = 0, tieCount = 0;
 	gameType = 0;
+	winType = 0;
 	gameIsOver = false;
 	playerCol = EMPTY;
 }//gobord::gobord
@@ -35,6 +36,7 @@ Goboard::Goboard(int h, int w) {
 	height = h, width = w;
 	gameType = 0;
 	wonCount = 0, tieCount = 0;
+	winType = 0;
 	entrance = NULL, exit = NULL, leftUpper = NULL;
 	gameIsOver = false;
 	playerCol = EMPTY;
@@ -245,12 +247,14 @@ bool Goboard::victory(BoardSquare* square, char & color) {
 void Goboard::gameOver(BoardSquare* square, char & color) {
 	if (stalemate()) {
 		gameIsOver = true;
+		winType = 2;
 		print();
 		tieCount++;
 		cout << "Too bad... There is no winner" << endl;
 	}
 	else if (victory(square, color)) {
 		gameIsOver = true;
+		winType = 1;
 		print();
 		wonCount++;
 		cout << "Congratulations, " << color << " has won the game!" << endl;
@@ -274,10 +278,20 @@ void Goboard::reset() {
 	stack.empty();
 	gameIsOver = false;
 	playerCol = BLACK;
+	winType = 0;
 }
 
-void Goboard::getDemoStats(int it) {
-	cout << it << " ";
-	cout << wonCount << " ";
-	cout << stack.getLength() << endl;
+void Goboard::getDemoStats(ofstream & file, int it) {
+	file << it << '\t';
+	file << wonCount << "\t\t";
+	file << tieCount << "\t\t";
+	file << stack.getLength() << "\t\t";
+
+	if (winType == 1) {
+		file << "WON" << endl;
+	}
+	else if (winType == 2) {
+		file << "TIE" << endl;
+	}
+	
 }

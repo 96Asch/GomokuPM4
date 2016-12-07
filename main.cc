@@ -3,8 +3,7 @@
 #include "goboard.h"
 #include <cstdlib>
 #include "stack.h"
-#include <windows.h>
-#include <conio.h>
+#include <fstream>
 
 #define BLACK 'B'
 #define WHITE 'W'
@@ -112,6 +111,14 @@ void playerMenu(char &color, int height, int width, int & x, int & y, char & opt
 	}
 }
 
+void writeHeaderStats(ofstream & file) {
+	file << "Game" << '\t';
+	file << "Win Count" << '\t';
+	file << "Tie Count" << '\t';
+	file << "No. of turns" << '\t';
+	file << "WIN/TIE" << endl;
+}
+
 //Function for the main menu.
 void printMenu() {
 	int height, width, y, x, gametype;
@@ -127,8 +134,11 @@ void printMenu() {
 	Gobord.createBoard();
 	Gobord.print();
 	color = BLACK;
+	ofstream file;
+	file.open("data.txt");
+	writeHeaderStats(file);
 
-	int maxIt = 10, count = 0;
+	int maxIt = 100;
 	for (int i = 0; i < maxIt; i++) {
 		while (!Gobord.getGameStatus()) {
 			y = rand() % height, x = rand() % width;
@@ -136,7 +146,7 @@ void printMenu() {
 			Gobord.turn(color, y, x, succ, option);
 			//Sleep(500);
 		}
-		Gobord.getDemoStats(i + 1);
+		Gobord.getDemoStats(file, i + 1);
 		Gobord.reset();
 		
 

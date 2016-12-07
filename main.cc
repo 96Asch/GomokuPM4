@@ -10,6 +10,7 @@
 #define PVC 1
 #define CVC 2
 
+#define PLAYERTURN (Gobord.getGameType() == PVC && Gobord.getPlayerCol() == color)
 
 using namespace std;
 
@@ -84,7 +85,7 @@ void readPlayerCol(Goboard & goboard, char & color) {
 //Function for the main menu.
 void printMenu() {
 	int height, width, y, x;
-	char color = BLACK;
+	char color = BLACK, option = ' ';
 	bool succ = false;
 	readSize(height,width);
 	Goboard Gobord(height, width);
@@ -95,7 +96,15 @@ void printMenu() {
 	Gobord.print();
 
 	while (!Gobord.getGameStatus()) {
-		Gobord.turn(color, y, x, succ);
+		if (PLAYERTURN) {
+			option = 'M';
+			cout << "It's now " << color << "'s turn!" << endl;
+			cout << "Enter x-coordinate: ";
+			y = readDigit(height);
+			cout << "Enter y-coordinate: ";
+			x = readDigit(width);
+		}
+		Gobord.turn(color, y, x, succ, option);
 		Gobord.print();
 	}
 

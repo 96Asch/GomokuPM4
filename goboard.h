@@ -173,8 +173,8 @@ class Goboard {
 	void setPlayerCol(char color);
 	bool undoUsed();
     void randomMove (char color, int & i, int & j, bool & succ);
-    void moveHuman (char color, int & i, int & j, bool & succ);
-	void turn(char & color, int & y, int & x, bool & succ);
+    void moveHuman (char color, int & i, int & j, bool & succ, bool & undo, char option);
+	void turn(char & color, int & y, int & x, bool & succ, char & opt);
     void print ( );
     bool victory (BoardSquare* square, char & color);
 	int countConsecSquare(BoardSquare* square, int dir, int opdir, char color);

@@ -14,6 +14,11 @@ using namespace std;
 
 #define PVC 1
 
+//Definitions for player options.
+#define MOVEOPT 'M'
+#define UNDOOPT	'U'
+#define POSMOVE 'C'
+
 //Constructor for a board with a set height and width.
 Goboard::Goboard ( ) {
 	height = 5, width = 5;
@@ -156,32 +161,38 @@ void Goboard::randomMove(char color, int & y, int & x, bool & succ) {
 }
 
 //Function to let a human player place a piece.
-void Goboard::moveHuman(char color, int & i, int & j, bool & succ) {
-		cout << "Enter x-coordinate ";
-		j = readDigit(height-1);
-		cout << "Enter y-coordinate ";
-		i = readDigit(width-1);
+void Goboard::moveHuman(char color, int & i, int & j, bool & succ, bool & undo, char option) {
+	switch (option) {
+	case MOVEOPT:
 		move(color, i, j, succ);
+		break;
+	case UNDOOPT:
+		undoMove();
+		break;
+	case POSMOVE:
+		// some function here
+		break;
+	default:
+		break;
+	}
+		
 }
 
 //A turn where a player or a computer can do a move.
-void Goboard::turn(char & color, int & y, int & x, bool & succ) {
+void Goboard::turn(char & color, int & y, int & x, bool & succ, char & opt) {
 	usedUndo = false;
 	if (getGameType() == 1 && !getGameStatus()) {
-		if (playerCol == color) {
-			cout << "Turn: " << stack.getLength()+1 << " -- " << color << "'s turn" << endl;
-		}
-
-		if (playerCol == BLACK && stack.getLength() % 2 == 0)
-			moveHuman(color, y, x, succ);
-		else if (playerCol == WHITE && stack.getLength() % 2 == 1) {
-			moveHuman(color, y, x, succ);
-		}
-		else if (playerCol == WHITE && stack.getLength() % 2 == 0) {
-			randomMove(color, y, x, succ);
-		}
-		else if (playerCol == BLACK && stack.getLength() % 2 == 1) {
-			randomMove(color, y, x, succ);
+		switch (playerCol) {
+		case BLACK:
+			if (stack.getLength() % 2 == 0) {	moveHuman(color, y, x, succ, usedUndo, opt);	}
+			else { randomMove(color, y, x, succ); }
+			break;
+		case WHITE:
+			if (stack.getLength() % 2 == 1) { moveHuman(color, y, x, succ, usedUndo, opt); }
+			else { randomMove(color, y, x, succ); }
+			break;
+		default:
+			break;
 		}
 		if (succ) {
 			switchColor(color);

@@ -136,8 +136,6 @@ void printMenu() {
 	Gobord.setPlayerCol(color);
 	Gobord.createBoard();
 	Gobord.print();
-	cout << "gametype: " << gametype << endl;
-	cout << "kleur: "<< color << endl;
 	color = BLACK;
 	while (!Gobord.getGameStatus()) {
 		if (Gobord.getGameType() == PVC && Gobord.getPlayerCol() == color) {

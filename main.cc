@@ -11,17 +11,13 @@
 #define CVC 2
 #define PVP 3
 
+#define MOVEOPT 'M'
+#define UNDOOPT	'U'
+#define POSMOVE 'C'
+
 #define PLAYERTURN (Gobord.getGameType() == PVC && Gobord.getPlayerCol() == color)
 
 using namespace std;
-
-// Returns a user given option.
-char getOption(char invoer) {
-	while (invoer == '\n') {
-		cin.get(invoer);
-	}
-	return invoer;
-}
 
 // Converts a stream chars into a single int.
 void convertCharstoInt(char letter, int & numberToCheck) {
@@ -35,7 +31,7 @@ int readDigit(int maxNumber) {
 	int res = 0;
 	char ch = '\n';
 	while (!isdigit(ch)) {
-	cin.get(ch);
+		cin.get(ch);
 	}
 	convertCharstoInt(ch, res);
 	while (ch != '\n') {
@@ -66,9 +62,8 @@ void readSize(int & height, int & width) {
 		}
 	}
 }
-
 //Reads a user given color for player 1.
-void readPlayerCol(Goboard & goboard, char & color) {
+void readPlayerCol(char & color) {
 	char col;
 	while (true) {
 		cout << "Enter color: ";
@@ -77,40 +72,79 @@ void readPlayerCol(Goboard & goboard, char & color) {
 			cout << "Enter valid color: " << BLACK << " or " << WHITE << endl;
 		}
 		else {
-			goboard.setPlayerCol(col);
+			color = col;
 			break;
 		}
 	}
 }
 
+void setupGame(int & height, int & width, int & gameType, char & color) {
+	
+	char setupPlayer1, setupPlayer2;
+	cout << "GAME SETUP"<< endl;
+	readSize(height, width);
+	cout << "Player 1: [C]omputer or [H]uman" << endl;
+	if ((cin >> setupPlayer1) && (setupPlayer1 == 'C' || setupPlayer1 == 'H' )) {
+		cout << "Player 2: [C]omputer or [H]uman" << endl;
+		if ((cin >> setupPlayer2) && (setupPlayer2 == 'C' || setupPlayer2 == 'H')) {
+			if ((setupPlayer1 == 'C' && setupPlayer2 == 'H') || (setupPlayer1 == 'H' && setupPlayer2 == 'C')) {
+				cout << "P1: " << setupPlayer1 << ", P2: " << setupPlayer2 << endl;
+				gameType = PVC;
+			}
+			else if (setupPlayer1 == 'C' && setupPlayer2 == 'C') {
+				gameType = CVC;
+			}
+			else  {
+				gameType = PVP;
+			}
+		}
+		else { cout << "Only Input: C, H" << endl; }
+	}
+	else { cout << "Only Input: C, H" << endl; }
+	readPlayerCol(color);
+	
+}
+
+void playerMenu(char &color, int height, int width, int & x, int & y, char & option ) {
+	cout << "~MENU~" << endl;
+	cout << "It's now " << color << "'s turn!" << endl;
+	cout << "[M]ove, [U]ndo Move, [C]alculate U. Games" << endl;
+	if ((cin >> option) && (option == MOVEOPT || option == UNDOOPT || option == POSMOVE)) {
+		if (option == MOVEOPT) {
+			cout << "Enter x-coordinate: ";
+			x = readDigit(width);
+			cout << "Enter y-coordinate: ";
+			y = readDigit(height);
+		}
+	}
+	else {
+		cout << "Only: " << MOVEOPT << ", " << UNDOOPT << ", ";
+		cout << POSMOVE << " allowed " << endl;
+	}
+}
+
 //Function for the main menu.
 void printMenu() {
-	int height, width, y, x;
+	int height, width, y, x, gametype;
 	char color = BLACK, option = ' ';
 	bool succ = false;
-	readSize(height,width);
-	Goboard Gobord(height, width);
-	Gobord.createBoard();
-	getOption(color);
-	readPlayerCol(Gobord,color);
-	Gobord.setGameType(PVP);
-	Gobord.print();
-	option = 'M';
 
+	setupGame(height, width, gametype, color);
+
+	Goboard Gobord(height, width);
+	Gobord.setGameType(gametype);
+	Gobord.setPlayerCol(color);
+	Gobord.createBoard();
+	Gobord.print();
+	cout << "gametype: " << gametype << endl;
+	cout << "kleur: "<< color << endl;
+	color = BLACK;
 	while (!Gobord.getGameStatus()) {
-		if (PLAYERTURN && Gobord.getGameType() == PVC) {
-			cout << "It's now " << color << "'s turn!" << endl;
-			cout << "Enter x-coordinate: ";
-			x = readDigit(height);
-			cout << "Enter y-coordinate: ";
-			y = readDigit(width);
+		if (Gobord.getGameType() == PVC && Gobord.getPlayerCol() == color) {
+			playerMenu(color, height, width, x, y, option);
 		}
 		else if (Gobord.getGameType() == PVP) {
-			cout << "It's now " << color << "'s turn!" << endl;
-			cout << "Enter x-coordinate: ";
-			x = readDigit(height);
-			cout << "Enter y-coordinate: ";
-			y = readDigit(width);
+			playerMenu(color, height, width, x, y, option);
 		}
 		Gobord.turn(color, y, x, succ, option);
 		Gobord.print();
@@ -121,7 +155,9 @@ void printMenu() {
 }
 
 int main ( ) {
+
 	printMenu();
+	
 	cin.get();
 	return 0;
 }//main

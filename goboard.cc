@@ -139,7 +139,7 @@ void Goboard::move(char color, int i, int j, bool & success) {
 void Goboard::undoMove() {
 	BoardSquare* squareC, *squareH;
 	int y = 0, x = 0;
-	if (!(stack).isEmpty()) {
+	if (stack.getLength() > 1) {
 		for (int i = 0; i < 2; i++) {
 			stack.pop(y, x);
 			squareC = getSquareAt(y, x);
@@ -155,7 +155,7 @@ void Goboard::undoMove() {
 //Function to place a piece on a random position.
 void Goboard::randomMove(char color, int & y, int & x, bool & succ) {
 	succ = false;
-	Sleep(1000);
+	//Sleep(1000);
 	while (!succ) {
 		y = rand() % height, x = rand() % width;
 		move(color, y, x, succ);

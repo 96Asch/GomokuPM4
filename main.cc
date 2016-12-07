@@ -1,6 +1,7 @@
 // file main.cc
 #include <iostream>
 #include "goboard.h"
+#include <cstdlib>
 #include "stack.h"
 
 #define BLACK 'B'
@@ -130,7 +131,7 @@ void printMenu() {
 	bool succ = false;
 
 	setupGame(height, width, gametype, color);
-
+	srand(height*width - height);
 	Goboard Gobord(height, width);
 	Gobord.setGameType(gametype);
 	Gobord.setPlayerCol(color);
@@ -138,18 +139,17 @@ void printMenu() {
 	Gobord.print();
 	color = BLACK;
 	while (!Gobord.getGameStatus()) {
+		y = rand() % height, x = rand() % width;
 		if (Gobord.getGameType() == PVC && Gobord.getPlayerCol() == color) {
 			playerMenu(color, height, width, x, y, option);
 		}
 		else if (Gobord.getGameType() == PVP) {
 			playerMenu(color, height, width, x, y, option);
 		}
-		Gobord.turn(color, y, x, succ, option);
 		Gobord.print();
+		Gobord.turn(color, y, x, succ, option);
 	}
-
 	cin.get();
-	
 }
 
 int main ( ) {

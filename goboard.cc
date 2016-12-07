@@ -2,7 +2,7 @@
 #include "goboard.h"
 #include "stack.h"
 #include <iostream>
-#include <cstdlib>
+
 using namespace std;
 
 //Definitions for colors and empty spaces.
@@ -24,7 +24,6 @@ Goboard::Goboard ( ) {
 	height = 5, width = 5;
 	entrance = NULL, exit = NULL, leftUpper = NULL;
 	gameType = 0;
-	srand(height*width-height);
 	gameIsOver = false, usedUndo = false;
 	playerCol = EMPTY;
 }//gobord::gobord
@@ -34,7 +33,6 @@ Goboard::Goboard(int h, int w) {
 	height = h, width = w;
 	gameType = 0;
 	entrance = NULL, exit = NULL, leftUpper = NULL;
-	srand(width-height*width);
 	gameIsOver = false, usedUndo = false;
 	playerCol = EMPTY;
 }//gobord::gobord
@@ -91,7 +89,7 @@ void Goboard::print ( ) {
 			if (counter == 1) {
 				cout << "|";
 			}
-			cout  <<xSquare->color <<  "|";
+			cout  << xSquare->color <<  "|";
 			xSquare = xSquare->neighbours[2];
 		}
 		counter = 0;
@@ -150,15 +148,6 @@ void Goboard::undoMove() {
 	}
 }
 
-//Function to place a piece on a random position.
-void Goboard::randomMove(char color, int & y, int & x, bool & succ) {
-	succ = false;
-	while (!succ) {
-		y = rand() % height, x = rand() % width;
-		move(color, y, x, succ);
-	}
-}
-
 //Function to let a human player place a piece.
 void Goboard::moveHuman(char color, int & i, int & j, bool & succ, bool & undo, char option) {
 	switch (option) {
@@ -184,11 +173,11 @@ void Goboard::turn(char & color, int & y, int & x, bool & succ, char & opt) {
 		switch (playerCol) {
 		case BLACK:
 			if (stack.getLength() % 2 == 0) {	moveHuman(color, y, x, succ, usedUndo, opt);	}
-			else { randomMove(color, y, x, succ); }
+			else { move(color, y, x, succ); }
 			break;
 		case WHITE:
 			if (stack.getLength() % 2 == 1) { moveHuman(color, y, x, succ, usedUndo, opt); }
-			else { randomMove(color, y, x, succ); }
+			else { move(color, y, x, succ); }
 			break;
 		default:
 			break;
@@ -198,7 +187,7 @@ void Goboard::turn(char & color, int & y, int & x, bool & succ, char & opt) {
 		}
 	}
 	else if (getGameType() == CVC && !getGameStatus()) {
-		randomMove(color, y, x, succ);
+		move(color, y, x, succ);
 		if (succ) {
 			switchColor(color);
 		}
@@ -267,10 +256,12 @@ bool Goboard::victory(BoardSquare* square, char & color) {
 void Goboard::gameOver(BoardSquare* square, char & color) {
 	if (stalemate()) {
 		gameIsOver = true;
+		print();
 		cout << "Too bad... There is no winner" << endl;
 	}
 	else if (victory(square, color)) {
 		gameIsOver = true;
+		print();
 		cout << "Congratulations, " << color << " has won the game!" << endl;
 	}
 }

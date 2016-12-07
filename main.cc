@@ -72,7 +72,7 @@ void readPlayerCol(Goboard & goboard, char & color) {
 		cout << "Enter color: ";
 		cin >> col;
 		if (col != BLACK && col != WHITE) {
-			cout << "Enter valid color" << endl;
+			cout << "Enter valid color: " << BLACK << " or " << WHITE << endl;
 		}
 		else {
 			goboard.setPlayerCol(col);

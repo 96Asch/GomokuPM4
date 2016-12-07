@@ -3,6 +3,8 @@
 #include "stack.h"
 #include <iostream>
 #include <cstdlib>
+#include <conio.h>
+#include <windows.h>
 using namespace std;
 
 //Definitions for colors and empty spaces.
@@ -146,6 +148,7 @@ void Goboard::undoMove() {
 //Function to place a piece on a random position.
 void Goboard::randomMove(char color, int & y, int & x, bool & succ) {
 	succ = false;
+	Sleep(1000);
 	while (!succ) {
 		y = rand() % height, x = rand() % width;
 		move(color, y, x, succ);
@@ -165,6 +168,10 @@ void Goboard::moveHuman(char color, int & i, int & j, bool & succ) {
 void Goboard::turn(char & color, int & y, int & x, bool & succ) {
 	usedUndo = false;
 	if (getGameType() == 1 && !getGameStatus()) {
+		if (playerCol == color) {
+			cout << "Turn: " << stack.getLength()+1 << " -- " << color << "'s turn" << endl;
+		}
+
 		if (playerCol == BLACK && stack.getLength() % 2 == 0)
 			moveHuman(color, y, x, succ);
 		else if (playerCol == WHITE && stack.getLength() % 2 == 1) {

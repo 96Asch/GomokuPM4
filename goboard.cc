@@ -13,6 +13,8 @@ using namespace std;
 #define EMPTY ' '
 
 #define PVC 1
+#define CVC 2
+#define PVP 3
 
 //Definitions for player options.
 #define MOVEOPT 'M'
@@ -181,7 +183,7 @@ void Goboard::moveHuman(char color, int & i, int & j, bool & succ, bool & undo, 
 //A turn where a player or a computer can do a move.
 void Goboard::turn(char & color, int & y, int & x, bool & succ, char & opt) {
 	usedUndo = false;
-	if (getGameType() == 1 && !getGameStatus()) {
+	if (getGameType() == PVC && !getGameStatus()) {
 		switch (playerCol) {
 		case BLACK:
 			if (stack.getLength() % 2 == 0) {	moveHuman(color, y, x, succ, usedUndo, opt);	}
@@ -198,8 +200,14 @@ void Goboard::turn(char & color, int & y, int & x, bool & succ, char & opt) {
 			switchColor(color);
 		}
 	}
-	else if (getGameType() == 2 && !getGameStatus()) {
+	else if (getGameType() == CVC && !getGameStatus()) {
 		randomMove(color, y, x, succ);
+		if (succ) {
+			switchColor(color);
+		}
+	}
+	else if (getGameType() == PVP && !getGameStatus()) {
+		moveHuman(color, y, x, succ, usedUndo, opt);
 		if (succ) {
 			switchColor(color);
 		}

@@ -9,6 +9,7 @@
 
 #define PVC 1
 #define CVC 2
+#define PVP 3
 
 #define PLAYERTURN (Gobord.getGameType() == PVC && Gobord.getPlayerCol() == color)
 
@@ -92,17 +93,24 @@ void printMenu() {
 	Gobord.createBoard();
 	getOption(color);
 	readPlayerCol(Gobord,color);
-	Gobord.setGameType(1);
+	Gobord.setGameType(PVP);
 	Gobord.print();
+	option = 'M';
 
 	while (!Gobord.getGameStatus()) {
-		if (PLAYERTURN) {
-			option = 'M';
+		if (PLAYERTURN && Gobord.getGameType() == PVC) {
 			cout << "It's now " << color << "'s turn!" << endl;
 			cout << "Enter x-coordinate: ";
-			y = readDigit(height);
+			x = readDigit(height);
 			cout << "Enter y-coordinate: ";
-			x = readDigit(width);
+			y = readDigit(width);
+		}
+		else if (Gobord.getGameType() == PVP) {
+			cout << "It's now " << color << "'s turn!" << endl;
+			cout << "Enter x-coordinate: ";
+			x = readDigit(height);
+			cout << "Enter y-coordinate: ";
+			y = readDigit(width);
 		}
 		Gobord.turn(color, y, x, succ, option);
 		Gobord.print();

@@ -18,6 +18,7 @@ class Stack {
 		~Stack();
 		void push(int y, int x);
 		void pop(int & y, int & x);
+		void empty();
 		bool isEmpty();
 		int getLength();
 

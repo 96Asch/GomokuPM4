@@ -1,6 +1,7 @@
 // file gobord.cc
 #include "goboard.h"
 #include "stack.h"
+#include <fstream>
 #include <iostream>
 
 using namespace std;
@@ -23,6 +24,7 @@ using namespace std;
 Goboard::Goboard ( ) {
 	height = 5, width = 5;
 	entrance = NULL, exit = NULL, leftUpper = NULL;
+	wonCount = 0, tieCount = 0;
 	gameType = 0;
 	gameIsOver = false;
 	playerCol = EMPTY;
@@ -32,6 +34,7 @@ Goboard::Goboard ( ) {
 Goboard::Goboard(int h, int w) {
 	height = h, width = w;
 	gameType = 0;
+	wonCount = 0, tieCount = 0;
 	entrance = NULL, exit = NULL, leftUpper = NULL;
 	gameIsOver = false;
 	playerCol = EMPTY;
@@ -44,6 +47,10 @@ Goboard::~Goboard ( ) {
 //Gets the status of the game.
 bool Goboard::getGameStatus() {
 	return gameIsOver;
+}
+
+void Goboard::setGameStatus(bool status) {
+	gameIsOver = status;
 }
 
 //Gets the type of game played.
@@ -239,11 +246,38 @@ void Goboard::gameOver(BoardSquare* square, char & color) {
 	if (stalemate()) {
 		gameIsOver = true;
 		print();
+		tieCount++;
 		cout << "Too bad... There is no winner" << endl;
 	}
 	else if (victory(square, color)) {
 		gameIsOver = true;
 		print();
+		wonCount++;
 		cout << "Congratulations, " << color << " has won the game!" << endl;
+		}
+}
+
+void Goboard::emptyBoard() {
+	BoardSquare* tempY = leftUpper, *tempX = leftUpper;
+	while (tempY != NULL) {
+		tempX = tempY;
+		while (tempX != NULL) {
+			tempX->color = EMPTY;
+			tempX = tempX->neighbours[2];
+		}
+		tempY = tempY->neighbours[4];
 	}
+}
+
+void Goboard::reset() {
+	emptyBoard();
+	stack.empty();
+	gameIsOver = false;
+	playerCol = BLACK;
+}
+
+void Goboard::getDemoStats(int it) {
+	cout << it << " ";
+	cout << wonCount << " ";
+	cout << stack.getLength() << endl;
 }

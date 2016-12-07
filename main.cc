@@ -3,6 +3,8 @@
 #include "goboard.h"
 #include <cstdlib>
 #include "stack.h"
+#include <windows.h>
+#include <conio.h>
 
 #define BLACK 'B'
 #define WHITE 'W'
@@ -80,7 +82,7 @@ void readSize(int & height, int & width) {
 		height = readDigit(50);
 		cout << "Enter a width: ";
 		width = readDigit(50);
-		if (width <  5 || height < 5) {
+		if (width <  2 || height < 2) {
 			cout << "Please enter a height and width above 4" << endl;
 		}
 		else {
@@ -91,23 +93,8 @@ void readSize(int & height, int & width) {
 
 //Sets up variables for the board and it's players.
 void setupGame(int & height, int & width, int & gameType, char & color) {
-	char setupPlayer1, setupPlayer2;
 	cout << "GAME SETUP"<< endl;
 	readSize(height, width);
-	readOption(setupPlayer1, 1, 1);
-	readOption(setupPlayer2, 1, 2);
-	cout << "P1: " << setupPlayer1 << ", P2: " << setupPlayer2 << endl;
-	if (setupPlayer1 == 'C' && setupPlayer2 == 'C') {
-		gameType = CVC;
-		}
-	else if (setupPlayer1 == 'H' && setupPlayer2 == 'H') {
-		gameType = PVP;
-		readOption(color, 3, 0);
-		}
-	else {
-		gameType = PVC;
-		readOption(color, 3, 0);
-	}
 }
 
 //Menu for the player(s)
@@ -135,25 +122,24 @@ void printMenu() {
 	srand(height*width - height);
 	
 	Goboard Gobord(height, width);
-	Gobord.setGameType(gametype);
+	Gobord.setGameType(CVC);
 	Gobord.setPlayerCol(color);
 	Gobord.createBoard();
 	Gobord.print();
 	color = BLACK;
 
-	while (!Gobord.getGameStatus()) {
-		y = rand() % height, x = rand() % width;
-		if (PLAYERTURN) {
-			playerMenu(color, height, width, x, y, option);
-		}	
-		else if (Gobord.getGameType() == PVP) {
-			playerMenu(color, height, width, x, y, option);
-		}
-		Gobord.turn(color, y, x, succ, option);
+	int maxIt = 10, count = 0;
+	for (int i = 0; i < maxIt; i++) {
+		while (!Gobord.getGameStatus()) {
+			y = rand() % height, x = rand() % width;
 
-		if (!Gobord.getGameStatus()) {
-			Gobord.print();
+			Gobord.turn(color, y, x, succ, option);
+			//Sleep(500);
 		}
+		Gobord.getDemoStats(i + 1);
+		Gobord.reset();
+		
+
 	}
 	cin.get();
 }

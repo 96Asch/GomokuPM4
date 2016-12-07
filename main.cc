@@ -91,7 +91,7 @@ void printMenu() {
 	Gobord.createBoard();
 	getOption(color);
 	readPlayerCol(Gobord,color);
-	Gobord.setGameType(2);
+	Gobord.setGameType(1);
 	Gobord.print();
 
 	while (!Gobord.getGameStatus()) {
@@ -105,7 +105,6 @@ void printMenu() {
 
 int main ( ) {
 	printMenu();
-	
 	cin.get();
 	return 0;
 }//main

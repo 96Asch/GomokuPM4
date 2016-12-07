@@ -10,6 +10,8 @@ using namespace std;
 #define WHITE 'W'
 #define EMPTY ' '
 
+#define PVC 1
+
 //Constructor for a board with a set height and width.
 Goboard::Goboard ( ) {
 	height = 5, width = 5;
@@ -33,6 +35,8 @@ Goboard::Goboard(int h, int w) {
 Goboard::~Goboard ( ) {
   // TODO
 }//gobord::~gobord
+
+ 
 
 //Gets the status of the game.
 bool Goboard::getGameStatus() {
@@ -112,7 +116,9 @@ void Goboard::move(char color, int i, int j, bool & success) {
 			gameOver(square, color);
 		}
 		else {
-			cout << "\rSpace is already occupied" << flush;
+			if (gameType == PVC && playerCol == color) {
+				cout << "Space is already occupied" << endl;
+			}
 		}
 	}
 	else{
@@ -148,11 +154,11 @@ void Goboard::randomMove(char color, int & y, int & x, bool & succ) {
 
 //Function to let a human player place a piece.
 void Goboard::moveHuman(char color, int & i, int & j, bool & succ) {
-	cout << "Enter x-coordinate ";
-	cin >> j;
-	cout << "Enter y-coordinate ";
-	cin >> i;
-	move(color, i, j, succ);
+		cout << "Enter x-coordinate ";
+		j = readDigit(height-1);
+		cout << "Enter y-coordinate ";
+		i = readDigit(width-1);
+		move(color, i, j, succ);
 }
 
 //A turn where a player or a computer can do a move.
@@ -170,11 +176,15 @@ void Goboard::turn(char & color, int & y, int & x, bool & succ) {
 		else if (playerCol == BLACK && stack.getLength() % 2 == 1) {
 			randomMove(color, y, x, succ);
 		}
-		switchColor(color);
+		if (succ) {
+			switchColor(color);
+		}
 	}
 	else if (getGameType() == 2 && !getGameStatus()) {
 		randomMove(color, y, x, succ);
-		switchColor(color);
+		if (succ) {
+			switchColor(color);
+		}
 	}
 }
 

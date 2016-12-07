@@ -133,6 +133,34 @@ class Goboard {
 		}
 	};
 
+	// Converts a stream chars into a single int.
+	void convertCharstoInt(char letter, int & numberToCheck) {
+		int temp = letter - '0';
+		numberToCheck *= 10;
+		numberToCheck += temp;
+	}
+
+	// Returns the digits of a stream of chars up to maxNumber.
+	int readDigit(int maxNumber) {
+		int res = 0;
+		char ch = '\n';
+		while (!isdigit(ch)) {
+			cin.get(ch);
+		}
+		convertCharstoInt(ch, res);
+		while (ch != '\n') {
+			cin.get(ch);
+			if (isdigit(ch) && res < maxNumber) {
+				convertCharstoInt(ch, res);
+			}
+		}
+		if (res > maxNumber) {
+			res /= 10;
+		}
+		cout << "You entered: " << res << endl;
+		return res;
+	}
+
   public:
     Goboard ( );
     Goboard (int height, int width);

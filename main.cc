@@ -70,6 +70,12 @@ void readOption(char & option, int mode, int playernum) {
 			if (opt == BLACK || opt == WHITE) {	option = opt; break; }
 			else { cout << "Enter valid color: " << BLACK << " or " << WHITE << endl; }
 		}
+		else if (mode == 4) {
+			cout << "Enter [Y]es or [N]o: ";
+			cin >> opt;
+			if (opt == 'Y' || opt == 'N') { option = opt; break; }
+			else { cout << "Only input Y or N allowed" << endl; }
+		}
 	}
 }
 
@@ -90,10 +96,10 @@ void readSize(int & height, int & width) {
 }
 
 //Sets up variables for the board and it's players.
-void setupGame(int & height, int & width, int & gameType, char & color) {
+void setupGame(int & height, int & width, int & gameType, char & color, int mode) {
 	char setupPlayer1, setupPlayer2;
 	cout << "GAME SETUP"<< endl;
-	readSize(height, width);
+	if (mode == 1) { readSize(height, width); }
 	readOption(setupPlayer1, 1, 1);
 	readOption(setupPlayer2, 1, 2);
 	cout << "P1: " << setupPlayer1 << ", P2: " << setupPlayer2 << endl;
@@ -125,35 +131,51 @@ void playerMenu(char &color, int height, int width, int & x, int & y, char & opt
 	}
 }
 
+//Menu for replaying a game.
+void replayMenu(bool & replay, char & option, int & gametype, char & color, int & height, int & width) {
+	cout << "Do you want to play a new game?" << endl;
+	readOption(option, 4, 0);
+	if (option == 'Y') { 
+		replay = true; 
+		setupGame(height, width, gametype, color, 0);
+	}
+	else {
+		replay = false;
+	}
+}
+
 //Function for the main menu.
 void printMenu() {
 	int height, width, y, x, gametype;
 	char color = BLACK, option = ' ';
-	bool succ = false;
-
-	setupGame(height, width, gametype, color);
+	bool succ = false, replay = true;
+	setupGame(height, width, gametype, color, 1);
 	srand(height*width - height);
-	
 	Goboard Gobord(height, width);
-	Gobord.setGameType(gametype);
-	Gobord.setPlayerCol(color);
 	Gobord.createBoard();
-	Gobord.print();
-	color = BLACK;
 
-	while (!Gobord.getGameStatus()) {
-		y = rand() % height, x = rand() % width;
-		if (PLAYERTURN) {
-			playerMenu(color, height, width, x, y, option);
-		}	
-		else if (Gobord.getGameType() == PVP) {
-			playerMenu(color, height, width, x, y, option);
-		}
-		Gobord.turn(color, y, x, succ, option);
+	while (replay) {
+		Gobord.setGameType(gametype);
+		Gobord.setPlayerCol(color);
+		Gobord.print();
+		color = BLACK;
 
-		if (!Gobord.getGameStatus()) {
-			Gobord.print();
+		while (!Gobord.getGameStatus()) {
+			y = rand() % height, x = rand() % width;
+			if (PLAYERTURN) {
+				playerMenu(color, height, width, x, y, option);
+			}
+			else if (Gobord.getGameType() == PVP) {
+				playerMenu(color, height, width, x, y, option);
+			}
+			Gobord.turn(color, y, x, succ, option);
+
+			if (!Gobord.getGameStatus()) {
+				Gobord.print();
+			}
 		}
+		Gobord.reset();
+		replayMenu(replay, option, gametype, color, height, width);
 	}
 	cin.get();
 }

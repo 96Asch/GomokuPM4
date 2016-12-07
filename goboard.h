@@ -13,7 +13,7 @@ using namespace std;
 //Struct for a square on the board.
 struct BoardSquare {
 	char color;          							 //			  7 0 1
-	BoardSquare* neighbours[8];			 //Entrance   6   2    Exit
+	BoardSquare* neighbours[8] ;					 //Entrance   6   2    Exit
 };						      						 //			  5 4 3	
 
 
@@ -181,5 +181,7 @@ class Goboard {
 	bool stalemate();
     void move (char color, int i, int j, bool & succes);
 	void undoMove ();
+	void emptyBoard();
+	void reset();
     // TODO
 };//gobord

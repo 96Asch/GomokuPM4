@@ -66,10 +66,12 @@ void Goboard::setPlayerCol(char color) {
 	playerCol = color;
 }
 
+//Gets the height of a board.
 int Goboard::getHeight() {
 	return height;
 }
 
+//Gets the width of a board.
 int Goboard::getWidth() {
 	return width;
 }
@@ -246,4 +248,26 @@ void Goboard::gameOver(BoardSquare* square, char & color) {
 		print();
 		cout << "Congratulations, " << color << " has won the game!" << endl;
 	}
+}
+
+//Empties the board.
+void Goboard::emptyBoard() {
+	BoardSquare* tempY = leftUpper, *tempX = leftUpper;
+	while (tempY != NULL) {
+		tempX = tempY;
+		while (tempX != NULL) {
+			tempX->color = EMPTY;
+			tempX = tempX->neighbours[2];
+		}
+		tempY = tempY->neighbours[4];
+	}
+}
+
+//Resets a Gomoku game.
+void Goboard::reset() {
+	emptyBoard();
+	stack.empty();
+	gameIsOver = false;
+	playerCol = BLACK;
+	gameType = 0;
 }

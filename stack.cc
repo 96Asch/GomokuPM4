@@ -19,6 +19,14 @@ Stack::~Stack(){
 	//cout << "Stack is empty" << endl;
 }
 
+//Empties the stack.
+void Stack::empty() {
+	int from, to;
+	while (!isEmpty()) {
+		pop(from, to);
+	}
+}
+
 //Add an integer to the stack
 void Stack::push(int y, int x){
 	Move* newMove = new Move;

@@ -20,7 +20,13 @@
 
 using namespace std;
 
-
+/*
+AUTHORS:			Andrew Huang & Micha de Jong
+STUDENTID:			S1913999 & S1821784
+DATE OF COMPLETION: 09-12-2016
+ASSIGNMENT:			4 "GOMOKU"
+COMPILER:			g++
+*/
 // Converts a stream chars into a single int.
 void convertCharstoInt(char letter, int & numberToCheck) {
 	int temp = letter - '0';
@@ -179,8 +185,26 @@ void printMenu() {
 	}
 	cin.get();
 }
+/*
+Function to display information intended for users.
+*/
+void displayInformation() {
+	cout << "_____________________________________________________" << endl;
+	cout << "This program is made by Andrew Huang & Micha de Jong" << endl;
+	cout << "Students at Leiden University 2016 " << endl;
+	cout << "\nThis program can play the game Gomoku." << endl;
+	cout << "The user is able to choose the type of gamemode. " << endl;
+	cout << "For example PVP, CVC or PVC and the user is able to ." << endl;
+	cout << "choose the color. Black is the color which starts the game." << endl;
+	cout << "The user has 3 options: Make a move, undo a move and" << endl;
+	cout << "calculate the ammount of games there can be played." << endl;
+	cout << "At the end of a game you can choose if you  want to stop" << endl;
+	cout << "or continue." << endl;
+	cout << "_____________________________________________________" << endl;
+}
 
 int main ( ) {
+	displayInformation();
 	printMenu();
 	cin.get();
 	return 0;

@@ -13,7 +13,7 @@ using namespace std;
 //Struct for a square on the board.
 struct BoardSquare {
 	char color;          							 //			  7 0 1
-	BoardSquare* neighbours[8] ;					 //Entrance   6   2    Exit
+	BoardSquare* neighbours[8] = {NULL};					 //Entrance   6   2    Exit
 };						      						 //			  5 4 3	
 
 

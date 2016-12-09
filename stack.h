@@ -16,6 +16,7 @@ class Stack {
 	public:
 		Stack();
 		~Stack();
+		void empty();
 		void push(int y, int x);
 		void pop(int & y, int & x);
 		bool isEmpty();

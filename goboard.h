@@ -13,7 +13,7 @@ using namespace std;
 //Struct for a square on the board.
 struct BoardSquare {
 	char color;          							 //			  7 0 1
-	BoardSquare* neighbours[8];			 //Entrance   6   2    Exit
+	BoardSquare* neighbours[8] = {NULL};			 //Entrance   6   2    Exit
 };						      						 //			  5 4 3	
 
 
@@ -28,7 +28,6 @@ class Goboard {
 	bool gameIsOver;
 	int gameType;
 	char playerCol;
-	bool usedUndo;
 	
 	//Adds a square and connects it to other squares.
 	BoardSquare* addSquare(char color) {
@@ -143,9 +142,9 @@ class Goboard {
 	void setGameType(int gametype);
 	char getPlayerCol();
 	void setPlayerCol(char color);
-	bool undoUsed();
-    void randomMove (char color, int & i, int & j, bool & succ);
-    void moveHuman (char color, int & i, int & j, bool & succ, bool & undo, char option);
+	int getHeight();
+	int getWidth();
+    void moveHuman (char color, int & i, int & j, bool & succ, char option);
 	void turn(char & color, int & y, int & x, bool & succ, char & opt);
     void print ( );
     bool victory (BoardSquare* square, char & color);
@@ -158,5 +157,7 @@ class Goboard {
 	void moveUG(char color, int i, int j);
 	int calculateEmptySquares();
 	int calculateUnGames(char color);
+	void emptyBoard();
+	void reset();
     // TODO
 };//gobord

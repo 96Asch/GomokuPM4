@@ -1,6 +1,6 @@
 // file gobord.cc
-#include "goboard.h"
-#include "stack.h"
+#include "huangdejonggoboard4.h"
+#include "huangdejongstack4.h"
 #include <iostream>
 #include <cstdlib>
 using namespace std;
@@ -18,6 +18,8 @@ using namespace std;
 #define MOVEOPT 'M'
 #define UNDOOPT	'U'
 #define POSMOVE 'C'
+
+#define WINCOND 5
 
 //Constructor for a board with a set height and width.
 Goboard::Goboard ( ) {
@@ -136,7 +138,7 @@ void Goboard::move(char color, int i, int j, bool & success) {
 
 //Undo the last player move.
 void Goboard::undoMove() {
-	BoardSquare* squareC, *squareH;
+	BoardSquare* squareC;
 	int y = 0, x = 0;
 	if (stack.getLength() > 1) {
 		for (int i = 0; i < 2; i++) {
@@ -161,7 +163,9 @@ void Goboard::moveHuman(char color, int & i, int & j, bool & succ, char option) 
 		succ = false;
 		break;
 	case POSMOVE:
-		// some function here
+		cout << "Calculate the amount of unique games with: " << calculateEmptySquares();
+		cout << " empty squares." << endl;
+		cout << "No: " << calculateUnGames(color, calculateEmptySquares()) << endl;
 		break;
 	default:
 		break;
@@ -204,20 +208,20 @@ bool Goboard::stalemate() {
 }
 
 //Function to count the number of consecutive squares in each direction.
-int Goboard::countConsecSquare(BoardSquare* square, int direction, int opdirection, char color) {
+int Goboard::countConsecSquare(BoardSquare* square, int dir, int opdir, char color) {
 	int squareCounter = 1;
 	BoardSquare* temp = square;
 
 	do {
 		if (temp != square) { squareCounter++; }
-		temp = temp->neighbours[direction];
+		temp = temp->neighbours[dir];
 	} while (temp && temp->color == color);
 	
 	temp = square;
 
 	do {
 		if (temp != square) { squareCounter++; }
-		temp = temp->neighbours[opdirection];
+		temp = temp->neighbours[opdir];
 	} while (temp && temp->color == color);
 
 	return squareCounter;
@@ -225,17 +229,17 @@ int Goboard::countConsecSquare(BoardSquare* square, int direction, int opdirecti
 
 //Function to determine if a color has won a game.
 bool Goboard::victory(BoardSquare* square, char & color) {
-	if (stack.getLength() >= 9){
+//	if (stack.getLength() >= ((WINCOND*2)-1)){
 		int vertSeq = countConsecSquare(square, 0, 4, color );
 		int horzSeq = countConsecSquare(square, 6, 2, color);
 		int diaLSeq = countConsecSquare(square, 7, 3, color);
 		int diaRSeq = countConsecSquare(square, 1, 5, color);
-		if (vertSeq >= 5 || horzSeq >= 5 || diaLSeq >= 5 || diaRSeq >= 5) {
+		if (vertSeq >= WINCOND || horzSeq >= WINCOND || diaLSeq >= WINCOND || diaRSeq >= WINCOND) {
 			return true;
 		}
 		else { return false; }
-	}
-	else { return false; }
+//	}
+//	else { return false; }
 }
 
 //Function to determine when a game is over.
@@ -252,40 +256,12 @@ void Goboard::gameOver(BoardSquare* square, char & color) {
 	}
 }
 
-//Undo the last player move.
-void Goboard::undoMoveUG(int y, int x) {
-	BoardSquare* squareC;
-		for (int i = 0; i < 2; i++) {
-			squareC = getSquareAt(y, x);
-			squareC->color = EMPTY;
-		}
-}
-
-
-//Function to place a piece on the board
-void Goboard::moveUG(char color, int i, int j) {
-	if (i<height&&j<width) {
-		BoardSquare* square;
-		square = getSquareAt(i, j);
-		if (!isOccupied(square)) {
-			square->color = color;
-		}
-		else {
-			if (gameType == PVC && playerCol == color) {
-				cout << "Space is already occupied" << endl;
-			}
-		}
-	}
-	else {
-		cout << "Move out of bounds" << endl;
-	}
-}
-
+//Returns the number of empty squares on the board.
 int Goboard::calculateEmptySquares() {
 	BoardSquare* square;
 	int counter = 0;
 	for (int i = 0; i < height; i++) {
-		for (int j = 0; j < height; j++) {
+		for (int j = 0; j < width; j++) {
 			square = getSquareAt(i, j);
 			if (square->color == EMPTY) {
 				counter++;
@@ -295,17 +271,30 @@ int Goboard::calculateEmptySquares() {
 	return counter;
 }
 
-int Goboard::calculateUnGames(char color) {
-	int numGames = 0;
-	if (calculateEmptySquares() == 1) {
+//Returns the number of unique games from a position.
+int Goboard::calculateUnGames(char color, int empty) {
+	if (empty <= 1) {
 		return 1;
 	}
-	for (int i = 0; i < height; i++) {
-		for (int j = 0; j < height; j++) {
-			moveUG(color, i, j);
-			numGames = numGames + calculateUnGames(color);
-			undoMoveUG(i, j);
+	int numGames = 0;
+	int emptyCounter = empty;
+
+	BoardSquare* square = leftUpper;
+	while (square && emptyCounter > 0) {
+		
+		if (square->color == EMPTY) {	
+			emptyCounter--;
+			square->color = color;
+			
+			if (victory(square,color)) {
+				numGames++;
+			}
+			else {
+				numGames += calculateUnGames(switchColor(color), empty - 1);
+			}
+			square->color = EMPTY;
 		}
+		square = nextSquare(square);
 	}
 	return numGames;
 }
@@ -330,4 +319,18 @@ void Goboard::reset() {
 	gameIsOver = false;
 	playerCol = BLACK;
 	gameType = 0;
+}
+
+//Returns the next square
+BoardSquare* Goboard::nextSquare(BoardSquare* square) {
+	if (square->neighbours[2] != NULL) {
+		square = square->neighbours[2];
+	}
+	else if (square->neighbours[2] == NULL && square->neighbours[4] != NULL) {
+		square = square->neighbours[4];
+		while (square->neighbours[6] != NULL) {
+			square = square->neighbours[6];
+		}
+	}
+	return square;
 }

@@ -2,7 +2,7 @@
 	A pointer-based Gomoku boardgame.
 */
 #include <iostream>
-#include "stack.h"
+#include "huangdejongstack4.h"
 using namespace std;
 
 //Definitions for colors and empty spaces.
@@ -13,7 +13,7 @@ using namespace std;
 //Struct for a square on the board.
 struct BoardSquare {
 	char color;          							 //			  7 0 1
-	BoardSquare* neighbours[8] = {NULL};			 //Entrance   6   2    Exit
+	BoardSquare* neighbours[8];						 //Entrance   6   2    Exit
 };						      						 //			  5 4 3	
 
 
@@ -117,18 +117,21 @@ class Goboard {
 		
 	};
 
+
 	//Returns true when a square is occupied.
 	bool isOccupied(BoardSquare* square) {
 		return(square->color == BLACK || square->color == WHITE);
 	};
 
 	//Function to switch the color of a player.
-	void switchColor(char & color) {
+	char switchColor(char & color) {
 		if (color == BLACK) {
 			color = WHITE;
+			return WHITE;
 		}
 		else {
 			color = BLACK;
+			return BLACK;
 		}
 	};
 
@@ -153,11 +156,10 @@ class Goboard {
 	bool stalemate();
     void move (char color, int i, int j, bool & succes);
 	void undoMove ( );
-	void undoMoveUG(int y, int x);
-	void moveUG(char color, int i, int j);
 	int calculateEmptySquares();
-	int calculateUnGames(char color);
+	int calculateUnGames(char color, int empty);
 	void emptyBoard();
 	void reset();
+	BoardSquare* nextSquare(BoardSquare* square);
     // TODO
 };//gobord

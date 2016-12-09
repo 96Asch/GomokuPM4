@@ -1,9 +1,9 @@
 # a simple makefile
-all: main.o goboard.o stack.o
-	g++ -Wall -o GomokuGame goboard.o main.o stack.o
-gobord.o: goboard.cc goboard.h
-	g++ -Wall -c goboard.cc
-main.o: main.cc goboard.h stack.h
-	g++ -Wall -c main.cc
-stack.o: stack.cc stack.h
-	g++ -Wall -c stack.cc
+all: huangdejong4.o huangdejonggoboard4.o huangdejongstack4.o
+	g++ -Wall -o GomokuGame huangdejonggoboard4.o huangdejong4.o huangdejongstack4.o
+huangdejonggoboard4.o: huangdejonggoboard4.cc huangdejonggoboard4.h
+	g++ -Wall -c huangdejonggoboard4.cc
+huangdejong4.o: huangdejong4.cc huangdejonggoboard4.h huangdejongstack4.h
+	g++ -Wall -c huangdejong4.cc
+huangdejongstack4.o: huangdejongstack4.cc huangdejongstack4.h
+	g++ -Wall -c huangdejongstack4.cc
